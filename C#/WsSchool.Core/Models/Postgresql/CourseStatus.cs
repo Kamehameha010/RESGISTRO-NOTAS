@@ -5,19 +5,19 @@ using System.Collections.Generic;
 // If you have enabled NRTs for your project, then un-comment the following line:
 // #nullable disable
 
-namespace WsSchool.Core.Models.Mysql
+namespace WsSchool.Core.Models.Postgresql
 {
-    public partial class TbRol
+    public partial class CourseStatus
     {
-        public TbRol()
+        public CourseStatus()
         {
-            TbLogin = new HashSet<TbLogin>();
+            TbCourse = new HashSet<Course>();
         }
 
-        public int RolId { get; set; }
-        public string Name { get; set; }
+        public int Coursestatusid { get; set; }
+        public string Code { get; set; }
         public string Description { get; set; }
 
-        public virtual ICollection<TbLogin> TbLogin { get; set; }
+        public virtual ICollection<Course> TbCourse { get; set; }
     }
 }

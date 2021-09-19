@@ -7,20 +7,19 @@ using System.Collections.Generic;
 
 namespace WsSchool.Core.Models.Mysql
 {
-    public partial class TbLogin
+    public partial class Login
     {
-        public TbLogin()
+        public Login()
         {
-            TbPerson = new HashSet<TbPerson>();
+            TbPerson = new HashSet<Person>();
         }
 
         public int LoginId { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
-        public int PersonId { get; set; }
-        public int RolId { get; set; }
+        public int? RolId { get; set; }
 
-        public virtual TbRol Rol { get; set; }
-        public virtual ICollection<TbPerson> TbPerson { get; set; }
+        public virtual Rol Rol { get; set; }
+        public virtual ICollection<Person> TbPerson { get; set; }
     }
 }

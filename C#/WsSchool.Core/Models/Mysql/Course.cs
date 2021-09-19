@@ -7,11 +7,11 @@ using System.Collections.Generic;
 
 namespace WsSchool.Core.Models.Mysql
 {
-    public partial class TbCourse
+    public partial class Course
     {
-        public TbCourse()
+        public Course()
         {
-            TbGradebook = new HashSet<TbGradebook>();
+            TbGradebook = new HashSet<Gradebook>();
         }
 
         public int CourseId { get; set; }
@@ -19,7 +19,7 @@ namespace WsSchool.Core.Models.Mysql
         public string Name { get; set; }
         public int? CourseStatusId { get; set; }
 
-        public virtual TbCourseStatus CourseStatus { get; set; }
-        public virtual ICollection<TbGradebook> TbGradebook { get; set; }
+        public virtual CourseStatus CourseStatus { get; set; }
+        public virtual ICollection<Gradebook> TbGradebook { get; set; }
     }
 }

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 // If you have enabled NRTs for your project, then un-comment the following line:
 // #nullable disable
 
-namespace WsSchool.Core.Models.Mysql
+namespace WsSchool.Core.Models.Postgresql
 {
     public partial class SchoolDbContext : DbContext
     {
@@ -30,60 +30,53 @@ namespace WsSchool.Core.Models.Mysql
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            /*if (!optionsBuilder.IsConfigured)
+           /*  if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseMySQL("server=127.0.0.1;port=3306;user=kame;password=1234;database=schooldb");
-            }*/
+                optionsBuilder.UseNpgsql("Host=127.0.0.1;Database=schooldb;Username=joel;Password=1234");
+            } */
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Course>(entity =>
             {
-                entity.HasKey(e => e.CourseId)
-                    .HasName("PRIMARY");
+                entity.HasKey(e => e.Courseid)
+                    .HasName("tb_course_pkey");
 
                 entity.ToTable("tb_course");
 
-                entity.HasIndex(e => e.Code)
-                    .HasName("code_UNIQUE")
-                    .IsUnique();
-
-                entity.HasIndex(e => e.CourseStatusId)
-                    .HasName("FK_COURSE_STATUS_idx");
-
-                entity.Property(e => e.CourseId).HasColumnName("courseId");
+                entity.Property(e => e.Courseid)
+                    .HasColumnName("courseid")
+                    .UseIdentityAlwaysColumn();
 
                 entity.Property(e => e.Code)
                     .IsRequired()
                     .HasColumnName("code")
-                    .HasMaxLength(20);
+                    .HasMaxLength(45);
 
-                entity.Property(e => e.CourseStatusId).HasColumnName("courseStatusId");
+                entity.Property(e => e.Coursestatusid).HasColumnName("coursestatusid");
 
                 entity.Property(e => e.Name)
                     .HasColumnName("name")
                     .HasMaxLength(45);
 
-                entity.HasOne(d => d.CourseStatus)
+                entity.HasOne(d => d.Coursestatus)
                     .WithMany(p => p.TbCourse)
-                    .HasForeignKey(d => d.CourseStatusId)
-                    .HasConstraintName("FK_COURSE_STATUS");
+                    .HasForeignKey(d => d.Coursestatusid)
+                    .HasConstraintName("tb_course_coursestatusid_fkey");
             });
 
             modelBuilder.Entity<CourseStatus>(entity =>
             {
-                entity.HasKey(e => e.CourseStatusId)
-                    .HasName("PRIMARY");
+                entity.HasKey(e => e.Coursestatusid)
+                    .HasName("tb_course_status_pkey");
 
                 entity.ToTable("tb_course_status");
 
-                entity.HasIndex(e => e.Code)
-                    .HasName("code_UNIQUE")
-                    .IsUnique();
-
-                entity.Property(e => e.CourseStatusId).HasColumnName("courseStatusId");
+                entity.Property(e => e.Coursestatusid)
+                    .HasColumnName("coursestatusid")
+                    .UseIdentityAlwaysColumn();
 
                 entity.Property(e => e.Code)
                     .IsRequired()
@@ -91,86 +84,83 @@ namespace WsSchool.Core.Models.Mysql
                     .HasMaxLength(45);
 
                 entity.Property(e => e.Description)
+                    .IsRequired()
                     .HasColumnName("description")
                     .HasMaxLength(45);
             });
 
             modelBuilder.Entity<Gradebook>(entity =>
             {
-                entity.HasKey(e => e.GradebookId)
-                    .HasName("PRIMARY");
+                entity.HasKey(e => e.Gradebookid)
+                    .HasName("tb_gradebook_pkey");
 
                 entity.ToTable("tb_gradebook");
 
-                entity.HasIndex(e => e.CourseId)
-                    .HasName("FK_GRADE_COURSE_idx");
-
-                entity.HasIndex(e => e.StudentId)
-                    .HasName("FK_GRADE_STUDENT_idx");
-
-                entity.HasIndex(e => e.TeacherId)
-                    .HasName("FK_GRADE_TEACHER_idx");
-
-                entity.Property(e => e.GradebookId).HasColumnName("gradebookId");
+                entity.Property(e => e.Gradebookid)
+                    .HasColumnName("gradebookid")
+                    .UseIdentityAlwaysColumn();
 
                 entity.Property(e => e.Average)
                     .HasColumnName("average")
-                    .HasColumnType("decimal(3,2)");
+                    .HasColumnType("numeric(3,2)");
 
-                entity.Property(e => e.CourseId).HasColumnName("courseId");
+                entity.Property(e => e.Courseid).HasColumnName("courseid");
 
-                entity.Property(e => e.Q1).HasColumnType("decimal(3,2)");
+                entity.Property(e => e.Q1)
+                    .HasColumnName("q1")
+                    .HasColumnType("numeric(3,2)");
 
-                entity.Property(e => e.Q2).HasColumnType("decimal(3,2)");
+                entity.Property(e => e.Q2)
+                    .HasColumnName("q2")
+                    .HasColumnType("numeric(3,2)");
 
-                entity.Property(e => e.Q3).HasColumnType("decimal(3,2)");
+                entity.Property(e => e.Q3)
+                    .HasColumnName("q3")
+                    .HasColumnType("numeric(3,2)");
 
-                entity.Property(e => e.Status)
-                    .HasColumnName("status")
-                    .HasColumnType("tinyint");
+                entity.Property(e => e.Status).HasColumnName("status");
 
-                entity.Property(e => e.StudentId).HasColumnName("studentId");
+                entity.Property(e => e.Studentid).HasColumnName("studentid");
 
-                entity.Property(e => e.TeacherId).HasColumnName("teacherId");
+                entity.Property(e => e.Teacherid).HasColumnName("teacherid");
 
                 entity.HasOne(d => d.Course)
                     .WithMany(p => p.TbGradebook)
-                    .HasForeignKey(d => d.CourseId)
-                    .HasConstraintName("FK_GRADE_COURSE");
+                    .HasForeignKey(d => d.Courseid)
+                    .HasConstraintName("tb_gradebook_courseid_fkey");
 
                 entity.HasOne(d => d.Student)
                     .WithMany(p => p.TbGradebook)
-                    .HasForeignKey(d => d.StudentId)
-                    .HasConstraintName("FK_GRADE_STUDENT");
+                    .HasForeignKey(d => d.Studentid)
+                    .HasConstraintName("tb_gradebook_studentid_fkey");
 
                 entity.HasOne(d => d.Teacher)
                     .WithMany(p => p.TbGradebook)
-                    .HasForeignKey(d => d.TeacherId)
-                    .HasConstraintName("FK_GRADE_TEACHER");
+                    .HasForeignKey(d => d.Teacherid)
+                    .HasConstraintName("tb_gradebook_teacherid_fkey");
             });
 
             modelBuilder.Entity<Login>(entity =>
             {
-                entity.HasKey(e => e.LoginId)
-                    .HasName("PRIMARY");
+                entity.HasKey(e => e.Loginid)
+                    .HasName("tb_login_pkey");
 
                 entity.ToTable("tb_login");
 
-                entity.HasIndex(e => e.RolId)
-                    .HasName("FK_LOGIN_ROL_idx");
-
                 entity.HasIndex(e => e.Username)
-                    .HasName("username_UNIQUE")
+                    .HasName("tb_login_username_key")
                     .IsUnique();
 
-                entity.Property(e => e.LoginId).HasColumnName("loginId");
+                entity.Property(e => e.Loginid)
+                    .HasColumnName("loginid")
+                    .UseIdentityAlwaysColumn();
 
-                entity.Property(e => e.Password)
+                entity.Property(e => e.Passsword)
                     .IsRequired()
-                    .HasColumnName("password")
+                    .HasColumnName("passsword")
                     .HasMaxLength(100);
 
-                entity.Property(e => e.RolId).HasColumnName("rolId");
+                entity.Property(e => e.Rolid).HasColumnName("rolid");
 
                 entity.Property(e => e.Username)
                     .IsRequired()
@@ -179,25 +169,25 @@ namespace WsSchool.Core.Models.Mysql
 
                 entity.HasOne(d => d.Rol)
                     .WithMany(p => p.TbLogin)
-                    .HasForeignKey(d => d.RolId)
-                    .HasConstraintName("FK_LOGIN_ROL");
+                    .HasForeignKey(d => d.Rolid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("tb_login_rolid_fkey");
             });
 
             modelBuilder.Entity<Person>(entity =>
             {
-                entity.HasKey(e => e.PersonId)
-                    .HasName("PRIMARY");
+                entity.HasKey(e => e.Personid)
+                    .HasName("tb_person_pkey");
 
                 entity.ToTable("tb_person");
 
-                entity.HasIndex(e => e.LoginId)
-                    .HasName("FK_PERSON_LOGIN_idx");
-
                 entity.HasIndex(e => e.Nid)
-                    .HasName("nid_UNIQUE")
+                    .HasName("tb_person_nid_key")
                     .IsUnique();
 
-                entity.Property(e => e.PersonId).HasColumnName("personId");
+                entity.Property(e => e.Personid)
+                    .HasColumnName("personid")
+                    .UseIdentityAlwaysColumn();
 
                 entity.Property(e => e.Address)
                     .IsRequired()
@@ -208,7 +198,7 @@ namespace WsSchool.Core.Models.Mysql
                     .HasColumnName("lastname")
                     .HasMaxLength(45);
 
-                entity.Property(e => e.LoginId).HasColumnName("loginId");
+                entity.Property(e => e.Loginid).HasColumnName("loginid");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
@@ -224,18 +214,21 @@ namespace WsSchool.Core.Models.Mysql
 
                 entity.HasOne(d => d.Login)
                     .WithMany(p => p.TbPerson)
-                    .HasForeignKey(d => d.LoginId)
-                    .HasConstraintName("FK_PERSON_LOGIN");
+                    .HasForeignKey(d => d.Loginid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("tb_person_loginid_fkey");
             });
 
             modelBuilder.Entity<Rol>(entity =>
             {
-                entity.HasKey(e => e.RolId)
-                    .HasName("PRIMARY");
+                entity.HasKey(e => e.Rolid)
+                    .HasName("tb_rol_pkey");
 
                 entity.ToTable("tb_rol");
 
-                entity.Property(e => e.RolId).HasColumnName("rolId");
+                entity.Property(e => e.Rolid)
+                    .HasColumnName("rolid")
+                    .UseIdentityAlwaysColumn();
 
                 entity.Property(e => e.Description)
                     .HasColumnName("description")
@@ -249,52 +242,49 @@ namespace WsSchool.Core.Models.Mysql
 
             modelBuilder.Entity<Student>(entity =>
             {
-                entity.HasKey(e => e.StudentId)
-                    .HasName("PRIMARY");
+                entity.HasKey(e => e.Studentid)
+                    .HasName("tb_student_pkey");
 
                 entity.ToTable("tb_student");
 
-                entity.HasIndex(e => e.PersonId)
-                    .HasName("FK_STUDENT_PERSON_idx");
-
-                entity.Property(e => e.StudentId).HasColumnName("studentId");
+                entity.Property(e => e.Studentid)
+                    .HasColumnName("studentid")
+                    .UseIdentityAlwaysColumn();
 
                 entity.Property(e => e.Classroom)
                     .IsRequired()
                     .HasColumnName("classroom")
                     .HasMaxLength(45);
 
-                entity.Property(e => e.PersonId).HasColumnName("personId");
+                entity.Property(e => e.Personid).HasColumnName("personid");
 
                 entity.HasOne(d => d.Person)
                     .WithMany(p => p.TbStudent)
-                    .HasForeignKey(d => d.PersonId)
-                    .HasConstraintName("FK_STUDENT_PERSON");
+                    .HasForeignKey(d => d.Personid)
+                    .HasConstraintName("tb_student_personid_fkey");
             });
 
             modelBuilder.Entity<Teacher>(entity =>
             {
-                entity.HasKey(e => e.TeacherId)
-                    .HasName("PRIMARY");
+                entity.HasKey(e => e.Teacherid)
+                    .HasName("tb_teacher_pkey");
 
                 entity.ToTable("tb_teacher");
 
-                entity.HasIndex(e => e.PersonId)
-                    .HasName("FK_TEACHER_PERSON_idx");
+                entity.Property(e => e.Teacherid)
+                    .HasColumnName("teacherid")
+                    .UseIdentityAlwaysColumn();
 
-                entity.Property(e => e.TeacherId).HasColumnName("teacherId");
-
-                entity.Property(e => e.PersonId).HasColumnName("personId");
+                entity.Property(e => e.Personid).HasColumnName("personid");
 
                 entity.Property(e => e.Subject)
-                    .IsRequired()
                     .HasColumnName("subject")
                     .HasMaxLength(45);
 
                 entity.HasOne(d => d.Person)
                     .WithMany(p => p.TbTeacher)
-                    .HasForeignKey(d => d.PersonId)
-                    .HasConstraintName("FK_TEACHER_PERSON");
+                    .HasForeignKey(d => d.Personid)
+                    .HasConstraintName("tb_teacher_personid_fkey");
             });
 
             OnModelCreatingPartial(modelBuilder);

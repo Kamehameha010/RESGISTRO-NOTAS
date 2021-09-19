@@ -7,20 +7,20 @@ using System.Collections.Generic;
 
 namespace WsSchool.Core.Models.Mysql
 {
-    public partial class TbGradebook
+    public partial class Gradebook
     {
         public int GradebookId { get; set; }
         public int? StudentId { get; set; }
-        public decimal? Q1 { get; set; }
-        public decimal? Q2 { get; set; }
-        public decimal? Q3 { get; set; }
+        public decimal Q1 { get; set; }
+        public decimal Q2 { get; set; }
+        public decimal Q3 { get; set; }
         public decimal? Average { get; set; }
         public int? TeacherId { get; set; }
         public int? CourseId { get; set; }
-        public byte? State { get; set; }
+        public byte? Status { get; set; }
 
-        public virtual TbCourse Course { get; set; }
-        public virtual TbStudent Student { get; set; }
-        public virtual TbTeacher Teacher { get; set; }
+        public virtual Course Course { get; set; }
+        public virtual Student Student { get; set; }
+        public virtual Teacher Teacher { get; set; }
     }
 }

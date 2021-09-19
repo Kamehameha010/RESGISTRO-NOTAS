@@ -7,12 +7,12 @@ using System.Collections.Generic;
 
 namespace WsSchool.Core.Models.Mysql
 {
-    public partial class TbPerson
+    public partial class Person
     {
-        public TbPerson()
+        public Person()
         {
-            TbStudent = new HashSet<TbStudent>();
-            TbTeacher = new HashSet<TbTeacher>();
+            TbStudent = new HashSet<Student>();
+            TbTeacher = new HashSet<Teacher>();
         }
 
         public int PersonId { get; set; }
@@ -21,10 +21,10 @@ namespace WsSchool.Core.Models.Mysql
         public string Lastname { get; set; }
         public string Address { get; set; }
         public string PhoneNumber { get; set; }
-        public int LoginId { get; set; }
+        public int? LoginId { get; set; }
 
-        public virtual TbLogin Login { get; set; }
-        public virtual ICollection<TbStudent> TbStudent { get; set; }
-        public virtual ICollection<TbTeacher> TbTeacher { get; set; }
+        public virtual Login Login { get; set; }
+        public virtual ICollection<Student> TbStudent { get; set; }
+        public virtual ICollection<Teacher> TbTeacher { get; set; }
     }
 }

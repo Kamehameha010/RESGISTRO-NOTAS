@@ -7,17 +7,17 @@ using System.Collections.Generic;
 
 namespace WsSchool.Core.Models.Mysql
 {
-    public partial class TbCourseStatus
+    public partial class Rol
     {
-        public TbCourseStatus()
+        public Rol()
         {
-            TbCourse = new HashSet<TbCourse>();
+            TbLogin = new HashSet<Login>();
         }
 
-        public int CourseStatusId { get; set; }
-        public string Code { get; set; }
+        public int RolId { get; set; }
+        public string Name { get; set; }
         public string Description { get; set; }
 
-        public virtual ICollection<TbCourse> TbCourse { get; set; }
+        public virtual ICollection<Login> TbLogin { get; set; }
     }
 }
