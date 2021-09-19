@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using WsSchool.Core.Models.Mysql;
 
 namespace WsSchool.Controllers
 {
@@ -17,16 +18,18 @@ namespace WsSchool.Controllers
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
-
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        private readonly SchoolDbContext _context;
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, SchoolDbContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
             var rng = new Random();
+            
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateTime.Now.AddDays(index),
@@ -34,6 +37,12 @@ namespace WsSchool.Controllers
                 Summary = Summaries[rng.Next(Summaries.Length)]
             })
             .ToArray();
+        }
+
+        [HttpGet("GetRoles")]
+        public IEnumerable<Rol> GetRoles()
+        {
+            return _context.Rol.ToList();
         }
     }
 }
