@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 // Code scaffolded by EF Core assumes nullable reference types (NRTs) are not used or disabled.
 // If you have enabled NRTs for your project, then un-comment the following line:
@@ -11,8 +10,8 @@ namespace WsSchool.Core.Models.Mysql
     {
         public Person()
         {
-            TbStudent = new HashSet<Student>();
-            TbTeacher = new HashSet<Teacher>();
+            Students = new HashSet<Student>();
+            Teachers = new HashSet<Teacher>();
         }
 
         public int PersonId { get; set; }
@@ -24,7 +23,7 @@ namespace WsSchool.Core.Models.Mysql
         public int? LoginId { get; set; }
 
         public virtual Login Login { get; set; }
-        public virtual ICollection<Student> TbStudent { get; set; }
-        public virtual ICollection<Teacher> TbTeacher { get; set; }
+        public virtual ICollection<Student> Students { get; set; }
+        public virtual ICollection<Teacher> Teachers { get; set; }
     }
 }

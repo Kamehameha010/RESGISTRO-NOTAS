@@ -1,6 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
 
 // Code scaffolded by EF Core assumes nullable reference types (NRTs) are not used or disabled.
 // If you have enabled NRTs for your project, then un-comment the following line:
@@ -67,7 +65,7 @@ namespace WsSchool.Core.Models.Mysql
                     .HasMaxLength(45);
 
                 entity.HasOne(d => d.CourseStatus)
-                    .WithMany(p => p.TbCourse)
+                    .WithMany(p => p.Courses)
                     .HasForeignKey(d => d.CourseStatusId)
                     .HasConstraintName("FK_COURSE_STATUS");
             });
@@ -267,7 +265,7 @@ namespace WsSchool.Core.Models.Mysql
                 entity.Property(e => e.PersonId).HasColumnName("personId");
 
                 entity.HasOne(d => d.Person)
-                    .WithMany(p => p.TbStudent)
+                    .WithMany(p => p.Students)
                     .HasForeignKey(d => d.PersonId)
                     .HasConstraintName("FK_STUDENT_PERSON");
             });
@@ -292,7 +290,7 @@ namespace WsSchool.Core.Models.Mysql
                     .HasMaxLength(45);
 
                 entity.HasOne(d => d.Person)
-                    .WithMany(p => p.TbTeacher)
+                    .WithMany(p => p.Teachers)
                     .HasForeignKey(d => d.PersonId)
                     .HasConstraintName("FK_TEACHER_PERSON");
             });

@@ -12,7 +12,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-
+using WsSchool.Core.Interfaces;
+using WsSchool.Core.Repository;
 
 namespace WsSchool
 {
@@ -28,9 +29,14 @@ namespace WsSchool
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder => builder.WithOrigins("*").AllowAnyHeader().AllowAnyMethod());
+            });
             services.AddControllers();
             services.AddDbContext<Core.Models.Mysql.SchoolDbContext>(options=>options.UseMySQL(Configuration.GetConnectionString("SchoolDb_mysql")));
             services.AddDbContext<Core.Models.Postgresql.SchoolDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("SchoolDb_postgresql")));
+            //services.AddScoped<IUnitWork, UnitWork>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "CryptoRest", Version = "v1" });
@@ -43,13 +49,15 @@ namespace WsSchool
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WsSchool v1"));
 
             }
-            app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WsSchool v1"));
+            
             app.UseHttpsRedirection();
-
             app.UseRouting();
+
+            app.UseCors();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
