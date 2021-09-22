@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using WsSchool.Core.Models;
+using WsSchool.Core.Models.Entities;
 using WsSchool.Core.Models.Mysql;
+using WsSchool.Core.Repository;
 
 namespace WsSchool.Controllers
 {
@@ -15,95 +13,67 @@ namespace WsSchool.Controllers
     public class CoursesController : ControllerBase
     {
         private readonly SchoolDbContext _context;
+        private readonly UnitWork _unitWork;
+
         public CoursesController(SchoolDbContext context)
         {
             _context = context;
+            _unitWork = new UnitWork(_context);
+
         }
 
-        // GET: api/v1/Courses
         [HttpGet]
-        public async Task<ActionResult<Response>> GetCourse()
+        public async Task<ActionResult<Response>> GetAll()
         {
-            return new Response { Code = 1, Message = "", Data = await _context.Course.ToListAsync() };
+            return new Response { Code = 1, Message = "", Data = await _unitWork.Course.GetAll() };
         }
 
-
-        // GET: api/v1/Courses/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Response>> GetCourse(int id)
+        [HttpPost]
+        public async Task<ActionResult<Response>> Post(Course model)
         {
-            var course = await _context.Course.FindAsync(id);
-
-            if (course == null)
-            {
-                return new Response { Code = 0, Message = "Not Found Course", Data = null };
-            }
-            return new Response { Code = 0, Message = "", Data = null };
-        }
-
-        // PUT: api/v1/Courses/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
-        public async Task<ActionResult<Response>> PutCourseAsync(int id, Course course)
-        {
-            if (id != course.CourseId)
-            {
-                return new Response { Code = 0, Message = "", Data = null };
-            }
-
-            _context.Entry(course).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CourseExists(id))
-                {
-                    return new Response { Code = 0, Message = "Not Found Id", Data = null };
-                }
-                else
-                {
-                    return new Response { Code = 0, Message = "Error try again later", Data = null };
-                }
-            }
-
+            _unitWork.Course.Insert(model);
+            await _unitWork.SaveAsync();
             return new Response { Code = 1, Message = "", Data = null };
         }
 
-        // POST: api/v1/Courses
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPost]
-        public async Task<ActionResult<Response>> PostCourseAsync(Course course)
+        [HttpPut("{id}")]
+        public async Task<ActionResult<Response>> Put(int id, Course model)
         {
-            _context.Course.Add(course);
-            await _context.SaveChangesAsync();
+            if (id != model.CourseId)
+            {
+                return new Response { Code = 0, Message = "", Data = null };
+            }
+            _unitWork.Course.Update(model);
+            await _unitWork.SaveAsync();
 
-            return new Response { Code = 1, Message = "SuccessFul Insert", Data = null };
+            return new Response { Code = 1, Message = "", Data = null };
+        }
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Response>> GetById(int id)
+        {
+            var oCourse = await _unitWork.Course.GetById(id);
+            if (oCourse is null)
+            {
+                return new Response { Code = 0, Message = "Not Exists", Data = null };
+            }
+            return new Response { Code = 0, Message = "", Data = oCourse };
+
         }
 
-        // DELETE: api/v1/Courses/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Response>> DeleteCourseAsync(int id)
+        public async Task<ActionResult<Response>> Delete(int id)
         {
-            var course = await _context.Course.FindAsync(id);
-            if (course == null)
+            try
             {
-                return new Response { Code = 0, Message = "Not Found Id", Data = null };
+                await _unitWork.Course.Delete(id);
+                await _unitWork.SaveAsync();
+                return new Response { Code = 1, Message = "", Data = null };
+            }
+            catch (Exception)
+            {
+                return new Response { Code = 0, Message = "Not Exists", Data = null };
             }
 
-            _context.Course.Remove(course);
-            await _context.SaveChangesAsync();
-
-            return new Response { Code = 0, Message = "Successful Delete", Data = null }; ;
-        }
-
-        private bool CourseExists(int id)
-        {
-            return _context.Course.Any(e => e.CourseId == id);
         }
     }
 }

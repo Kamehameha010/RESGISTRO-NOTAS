@@ -12,28 +12,26 @@ namespace WsSchool.Core.Repository
     public class GenericRepository<TEntity> : IRepository<TEntity> where TEntity : class
     {
         private readonly DbSet<TEntity> _entities;
+        private readonly DbContext _context;
         public GenericRepository(DbContext context)
         {
-            _entities = context.Set<TEntity>();
+            _context = context;
+            _entities = _context.Set<TEntity>();
         }
         public void Insert(TEntity entity) => _entities.Add(entity);
-        public async Task Update(int id, TEntity entity)
-        {
-            var oEntity = await _entities.FindAsync(id);
-            _entities.Remove(oEntity);
-            _entities.Add(entity);
-        }
+        public void Update(TEntity entity) => _context.Entry(entity).State = EntityState.Modified;
+
 
         public async Task<IEnumerable<TEntity>> GetAll() => await _entities.ToListAsync();
         public async Task<TEntity>? GetById(int id) => await _entities.FindAsync(id);
         public async Task Delete(int id)
         {
             var oEntity = await _entities.FindAsync(id);
-            if (oEntity != null)
+            if (oEntity is null)
             {
-                _entities.Remove(oEntity);
+                throw new NullReferenceException();
             }
-            throw new NullReferenceException();
+            _entities.Remove(oEntity);
         }
         public async Task<IEnumerable<TEntity>> Find(Expression<Func<TEntity, bool>>? filter, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy)
         {

@@ -12,14 +12,6 @@
 
   <ItemGroup>
     <Compile Include="Models\Postgresql\SchoolDbContext.cs" />
-    <Compile Include="Models\Postgresql\Course.cs" />
-    <Compile Include="Models\Postgresql\CourseStatus.cs" />
-    <Compile Include="Models\Postgresql\Gradebook.cs" />
-    <Compile Include="Models\Postgresql\Login.cs" />
-    <Compile Include="Models\Postgresql\Person.cs" />
-    <Compile Include="Models\Postgresql\Rol.cs" />
-    <Compile Include="Models\Postgresql\Student.cs" />
-    <Compile Include="Models\Postgresql\Teacher.cs" />
   </ItemGroup>
 
   <ItemGroup>

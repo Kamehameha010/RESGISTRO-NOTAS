@@ -4,19 +4,19 @@
 // If you have enabled NRTs for your project, then un-comment the following line:
 // #nullable disable
 
-namespace WsSchool.Core.Models.Postgresql
+namespace WsSchool.Core.Models.Entities
 {
-    public partial class CourseStatus
+    public partial class Rol
     {
-        public CourseStatus()
+        public Rol()
         {
-            TbCourse = new HashSet<Course>();
+            TbLogin = new HashSet<Login>();
         }
 
-        public int Coursestatusid { get; set; }
-        public string Code { get; set; }
+        public int RolId { get; set; }
+        public string Name { get; set; }
         public string Description { get; set; }
 
-        public virtual ICollection<Course> TbCourse { get; set; }
+        public virtual ICollection<Login> TbLogin { get; set; }
     }
 }

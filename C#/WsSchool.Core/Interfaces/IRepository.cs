@@ -10,7 +10,7 @@ namespace WsSchool.Core.Interfaces
     public interface IRepository<TEntity>
     {
         void Insert(TEntity entity);
-        Task Update(int id, TEntity entity);
+        void Update(TEntity entity);
         Task<TEntity>? GetById(int id);
         Task<IEnumerable<TEntity>> GetAll();
         Task Delete(int id);

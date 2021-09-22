@@ -1,11 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using WsSchool.Core.Interfaces;
 using WsSchool.Core.Models;
+using WsSchool.Core.Models.Entities;
 using WsSchool.Core.Models.Mysql;
 using WsSchool.Core.Repository;
 
@@ -32,20 +29,23 @@ namespace WsSchool.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Response> Post(Person model)
+        public async  Task<ActionResult<Response>> Post(Person model)
         {
             _unitWork.Person.Insert(model);
+            await _unitWork.SaveAsync();
             return new Response { Code = 1, Message = "", Data = null };
         }
 
         [HttpPut("{id}")]
-        public ActionResult<Response> Put(int id, Person model)
+        public async Task<ActionResult<Response>> Put(int id, Person model)
         {
             if (id != model.PersonId)
             {
                 return new Response { Code = 0, Message = "", Data = null };
             }
-            _unitWork.Person.Update(id, model);
+            _unitWork.Person.Update(model);
+            await _unitWork.SaveAsync();
+
             return new Response { Code = 1, Message = "", Data = null };
         }
         [HttpGet("{id}")]
@@ -66,6 +66,7 @@ namespace WsSchool.Controllers
             try
             {
                 await _unitWork.Person.Delete(id);
+                await _unitWork.SaveAsync();
                 return new Response { Code = 1, Message = "", Data = null };
             }
             catch (Exception)

@@ -4,26 +4,26 @@
 // If you have enabled NRTs for your project, then un-comment the following line:
 // #nullable disable
 
-namespace WsSchool.Core.Models.Postgresql
+namespace WsSchool.Core.Models.Entities
 {
     public partial class Person
     {
         public Person()
         {
-            TbStudent = new HashSet<Student>();
-            TbTeacher = new HashSet<Teacher>();
+            Students = new HashSet<Student>();
+            Teachers = new HashSet<Teacher>();
         }
 
-        public int Personid { get; set; }
-        public int Nid { get; set; }
+        public int PersonId { get; set; }
+        public int? Nid { get; set; }
         public string Name { get; set; }
         public string Lastname { get; set; }
         public string Address { get; set; }
         public string PhoneNumber { get; set; }
-        public int Loginid { get; set; }
+        public int? LoginId { get; set; }
 
         public virtual Login Login { get; set; }
-        public virtual ICollection<Student> TbStudent { get; set; }
-        public virtual ICollection<Teacher> TbTeacher { get; set; }
+        public virtual ICollection<Student> Students { get; set; }
+        public virtual ICollection<Teacher> Teachers { get; set; }
     }
 }

@@ -363,3 +363,8 @@ MigrationBackup/
 FodyWeavers.xsd
 
 .vscode/
+WsSchool/Controllers/CoursesController - Copia.cs
+WsSchool.Core/Models/Mysql - Copia
+WsSchool.Core/Models/Postgresql - Copia
+SchoolUniTest/
+TestSchool/

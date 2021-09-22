@@ -4,19 +4,19 @@
 // If you have enabled NRTs for your project, then un-comment the following line:
 // #nullable disable
 
-namespace WsSchool.Core.Models.Mysql
+namespace WsSchool.Core.Models.Entities
 {
-    public partial class Rol
+    public partial class CourseStatus
     {
-        public Rol()
+        public CourseStatus()
         {
-            TbLogin = new HashSet<Login>();
+            Courses = new HashSet<Course>();
         }
 
-        public int RolId { get; set; }
-        public string Name { get; set; }
+        public int CourseStatusId { get; set; }
+        public string Code { get; set; }
         public string Description { get; set; }
 
-        public virtual ICollection<Login> TbLogin { get; set; }
+        public virtual ICollection<Course> Courses { get; set; }
     }
 }

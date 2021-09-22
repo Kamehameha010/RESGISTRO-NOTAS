@@ -4,7 +4,7 @@
 // If you have enabled NRTs for your project, then un-comment the following line:
 // #nullable disable
 
-namespace WsSchool.Core.Models.Postgresql
+namespace WsSchool.Core.Models.Entities
 {
     public partial class Teacher
     {
@@ -13,8 +13,8 @@ namespace WsSchool.Core.Models.Postgresql
             TbGradebook = new HashSet<Gradebook>();
         }
 
-        public int Teacherid { get; set; }
-        public int? Personid { get; set; }
+        public int TeacherId { get; set; }
+        public int? PersonId { get; set; }
         public string Subject { get; set; }
 
         public virtual Person Person { get; set; }

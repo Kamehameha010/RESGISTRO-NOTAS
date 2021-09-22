@@ -2,7 +2,7 @@
 using System;
 using System.Threading.Tasks;
 using WsSchool.Core.Interfaces;
-using WsSchool.Core.Models.Mysql;
+using WsSchool.Core.Models.Entities;
 
 namespace WsSchool.Core.Repository
 {

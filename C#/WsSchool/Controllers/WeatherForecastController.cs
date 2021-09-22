@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using WsSchool.Core.Models.Entities;
 using WsSchool.Core.Models.Mysql;
 
 namespace WsSchool.Controllers

@@ -4,7 +4,7 @@
 // If you have enabled NRTs for your project, then un-comment the following line:
 // #nullable disable
 
-namespace WsSchool.Core.Models.Mysql
+namespace WsSchool.Core.Models.Entities
 {
     public partial class Login
     {

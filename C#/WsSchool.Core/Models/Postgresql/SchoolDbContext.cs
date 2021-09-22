@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using WsSchool.Core.Models.Entities;
 
 // Code scaffolded by EF Core assumes nullable reference types (NRTs) are not used or disabled.
 // If you have enabled NRTs for your project, then un-comment the following line:
@@ -39,12 +40,12 @@ namespace WsSchool.Core.Models.Postgresql
         {
             modelBuilder.Entity<Course>(entity =>
             {
-                entity.HasKey(e => e.Courseid)
+                entity.HasKey(e => e.CourseId)
                     .HasName("tb_course_pkey");
 
                 entity.ToTable("tb_course");
 
-                entity.Property(e => e.Courseid)
+                entity.Property(e => e.CourseId)
                     .HasColumnName("courseid")
                     .UseIdentityAlwaysColumn();
 
@@ -53,26 +54,26 @@ namespace WsSchool.Core.Models.Postgresql
                     .HasColumnName("code")
                     .HasMaxLength(45);
 
-                entity.Property(e => e.Coursestatusid).HasColumnName("coursestatusid");
+                entity.Property(e => e.CourseStatusId).HasColumnName("coursestatusid");
 
                 entity.Property(e => e.Name)
                     .HasColumnName("name")
                     .HasMaxLength(45);
 
-                entity.HasOne(d => d.Coursestatus)
-                    .WithMany(p => p.TbCourse)
-                    .HasForeignKey(d => d.Coursestatusid)
+                entity.HasOne(d => d.CourseStatus)
+                    .WithMany(p => p.Courses)
+                    .HasForeignKey(d => d.CourseStatusId)
                     .HasConstraintName("tb_course_coursestatusid_fkey");
             });
 
             modelBuilder.Entity<CourseStatus>(entity =>
             {
-                entity.HasKey(e => e.Coursestatusid)
+                entity.HasKey(e => e.CourseStatusId)
                     .HasName("tb_course_status_pkey");
 
                 entity.ToTable("tb_course_status");
 
-                entity.Property(e => e.Coursestatusid)
+                entity.Property(e => e.CourseStatusId)
                     .HasColumnName("coursestatusid")
                     .UseIdentityAlwaysColumn();
 
@@ -89,12 +90,12 @@ namespace WsSchool.Core.Models.Postgresql
 
             modelBuilder.Entity<Gradebook>(entity =>
             {
-                entity.HasKey(e => e.Gradebookid)
+                entity.HasKey(e => e.GradebookId)
                     .HasName("tb_gradebook_pkey");
 
                 entity.ToTable("tb_gradebook");
 
-                entity.Property(e => e.Gradebookid)
+                entity.Property(e => e.GradebookId)
                     .HasColumnName("gradebookid")
                     .UseIdentityAlwaysColumn();
 
@@ -102,7 +103,7 @@ namespace WsSchool.Core.Models.Postgresql
                     .HasColumnName("average")
                     .HasColumnType("numeric(3,2)");
 
-                entity.Property(e => e.Courseid).HasColumnName("courseid");
+                entity.Property(e => e.CourseId).HasColumnName("courseid");
 
                 entity.Property(e => e.Q1)
                     .HasColumnName("q1")
@@ -118,29 +119,29 @@ namespace WsSchool.Core.Models.Postgresql
 
                 entity.Property(e => e.Status).HasColumnName("status");
 
-                entity.Property(e => e.Studentid).HasColumnName("studentid");
+                entity.Property(e => e.StudentId).HasColumnName("studentid");
 
-                entity.Property(e => e.Teacherid).HasColumnName("teacherid");
+                entity.Property(e => e.TeacherId).HasColumnName("teacherid");
 
                 entity.HasOne(d => d.Course)
                     .WithMany(p => p.TbGradebook)
-                    .HasForeignKey(d => d.Courseid)
+                    .HasForeignKey(d => d.CourseId)
                     .HasConstraintName("tb_gradebook_courseid_fkey");
 
                 entity.HasOne(d => d.Student)
                     .WithMany(p => p.TbGradebook)
-                    .HasForeignKey(d => d.Studentid)
+                    .HasForeignKey(d => d.StudentId)
                     .HasConstraintName("tb_gradebook_studentid_fkey");
 
                 entity.HasOne(d => d.Teacher)
                     .WithMany(p => p.TbGradebook)
-                    .HasForeignKey(d => d.Teacherid)
+                    .HasForeignKey(d => d.TeacherId)
                     .HasConstraintName("tb_gradebook_teacherid_fkey");
             });
 
             modelBuilder.Entity<Login>(entity =>
             {
-                entity.HasKey(e => e.Loginid)
+                entity.HasKey(e => e.LoginId)
                     .HasName("tb_login_pkey");
 
                 entity.ToTable("tb_login");
@@ -149,16 +150,16 @@ namespace WsSchool.Core.Models.Postgresql
                     .HasName("tb_login_username_key")
                     .IsUnique();
 
-                entity.Property(e => e.Loginid)
+                entity.Property(e => e.LoginId)
                     .HasColumnName("loginid")
                     .UseIdentityAlwaysColumn();
 
-                entity.Property(e => e.Passsword)
+                entity.Property(e => e.Password)
                     .IsRequired()
                     .HasColumnName("passsword")
                     .HasMaxLength(100);
 
-                entity.Property(e => e.Rolid).HasColumnName("rolid");
+                entity.Property(e => e.RolId).HasColumnName("rolid");
 
                 entity.Property(e => e.Username)
                     .IsRequired()
@@ -167,14 +168,14 @@ namespace WsSchool.Core.Models.Postgresql
 
                 entity.HasOne(d => d.Rol)
                     .WithMany(p => p.TbLogin)
-                    .HasForeignKey(d => d.Rolid)
+                    .HasForeignKey(d => d.RolId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("tb_login_rolid_fkey");
             });
 
             modelBuilder.Entity<Person>(entity =>
             {
-                entity.HasKey(e => e.Personid)
+                entity.HasKey(e => e.PersonId)
                     .HasName("tb_person_pkey");
 
                 entity.ToTable("tb_person");
@@ -183,7 +184,7 @@ namespace WsSchool.Core.Models.Postgresql
                     .HasName("tb_person_nid_key")
                     .IsUnique();
 
-                entity.Property(e => e.Personid)
+                entity.Property(e => e.PersonId)
                     .HasColumnName("personid")
                     .UseIdentityAlwaysColumn();
 
@@ -196,7 +197,7 @@ namespace WsSchool.Core.Models.Postgresql
                     .HasColumnName("lastname")
                     .HasMaxLength(45);
 
-                entity.Property(e => e.Loginid).HasColumnName("loginid");
+                entity.Property(e => e.LoginId).HasColumnName("loginid");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
@@ -212,19 +213,19 @@ namespace WsSchool.Core.Models.Postgresql
 
                 entity.HasOne(d => d.Login)
                     .WithMany(p => p.TbPerson)
-                    .HasForeignKey(d => d.Loginid)
+                    .HasForeignKey(d => d.LoginId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("tb_person_loginid_fkey");
             });
 
             modelBuilder.Entity<Rol>(entity =>
             {
-                entity.HasKey(e => e.Rolid)
+                entity.HasKey(e => e.RolId)
                     .HasName("tb_rol_pkey");
 
                 entity.ToTable("tb_rol");
 
-                entity.Property(e => e.Rolid)
+                entity.Property(e => e.RolId)
                     .HasColumnName("rolid")
                     .UseIdentityAlwaysColumn();
 
@@ -240,12 +241,12 @@ namespace WsSchool.Core.Models.Postgresql
 
             modelBuilder.Entity<Student>(entity =>
             {
-                entity.HasKey(e => e.Studentid)
+                entity.HasKey(e => e.StudentId)
                     .HasName("tb_student_pkey");
 
                 entity.ToTable("tb_student");
 
-                entity.Property(e => e.Studentid)
+                entity.Property(e => e.StudentId)
                     .HasColumnName("studentid")
                     .UseIdentityAlwaysColumn();
 
@@ -254,34 +255,34 @@ namespace WsSchool.Core.Models.Postgresql
                     .HasColumnName("classroom")
                     .HasMaxLength(45);
 
-                entity.Property(e => e.Personid).HasColumnName("personid");
+                entity.Property(e => e.PersonId).HasColumnName("personid");
 
                 entity.HasOne(d => d.Person)
-                    .WithMany(p => p.TbStudent)
-                    .HasForeignKey(d => d.Personid)
+                    .WithMany(p => p.Students)
+                    .HasForeignKey(d => d.PersonId)
                     .HasConstraintName("tb_student_personid_fkey");
             });
 
             modelBuilder.Entity<Teacher>(entity =>
             {
-                entity.HasKey(e => e.Teacherid)
+                entity.HasKey(e => e.TeacherId)
                     .HasName("tb_teacher_pkey");
 
                 entity.ToTable("tb_teacher");
 
-                entity.Property(e => e.Teacherid)
+                entity.Property(e => e.TeacherId)
                     .HasColumnName("teacherid")
                     .UseIdentityAlwaysColumn();
 
-                entity.Property(e => e.Personid).HasColumnName("personid");
+                entity.Property(e => e.PersonId).HasColumnName("personid");
 
                 entity.Property(e => e.Subject)
                     .HasColumnName("subject")
                     .HasMaxLength(45);
 
                 entity.HasOne(d => d.Person)
-                    .WithMany(p => p.TbTeacher)
-                    .HasForeignKey(d => d.Personid)
+                    .WithMany(p => p.Teachers)
+                    .HasForeignKey(d => d.PersonId)
                     .HasConstraintName("tb_teacher_personid_fkey");
             });
 
