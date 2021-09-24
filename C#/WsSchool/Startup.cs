@@ -14,6 +14,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using WsSchool.Core.Interfaces;
 using WsSchool.Core.Repository;
+using WsSchool.Core.Services;
+using WsSchool.Core.Utility;
 
 namespace WsSchool
 {
@@ -36,7 +38,9 @@ namespace WsSchool
             services.AddControllers();
             services.AddDbContext<Core.Models.Mysql.SchoolDbContext>(options=>options.UseMySQL(Configuration.GetConnectionString("SchoolDb_mysql")));
             services.AddDbContext<Core.Models.Postgresql.SchoolDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("SchoolDb_postgresql")));
-            //services.AddScoped<IUnitWork, UnitWork>();
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddScoped<IUnitWork, UnitWork>();
+            services.AddScoped<IEncrypt, EncryptSha256>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "CryptoRest", Version = "v1" });

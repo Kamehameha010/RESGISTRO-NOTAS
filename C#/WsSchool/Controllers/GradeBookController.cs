@@ -1,78 +1,73 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
+using WsSchool.Core.Interfaces;
 using WsSchool.Core.Models;
+using WsSchool.Core.Models.DTOs;
 using WsSchool.Core.Models.Entities;
 using WsSchool.Core.Models.Mysql;
 using WsSchool.Core.Repository;
 
 namespace WsSchool.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/vq/[controller]")]
     [ApiController]
     public class GradeBookController : ControllerBase
     {
-        private readonly SchoolDbContext _context;
-        private readonly UnitWork _unitWork;
+        private readonly IMapper _mapper;
+        private readonly IUnitWork _unitWork;
 
-        public GradeBookController(SchoolDbContext context)
+        public GradeBookController(IMapper mapper, IUnitWork work)
         {
-            _context = context;
-            _unitWork = new UnitWork(_context);
-
+            _mapper = mapper;
+            _unitWork = work;
         }
 
         [HttpGet]
-        public async Task<ActionResult<Response>> GetAll()
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(Response))]
+        public async Task<IActionResult> GetAll()
         {
-            return new Response { Code = 1, Message = "", Data = await _unitWork.GreadeBook.GetAll() };
+            return Ok(new Response { Code = 1, Message = "", Data = _mapper.Map<IEnumerable<GradeBookDTO>>(await _unitWork.GradeBook.GetAll()) });
         }
 
         [HttpPost]
-        public async Task<ActionResult<Response>> Post(Gradebook model)
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(Response))]
+        public async Task<IActionResult> Post(GradeBookDTO model)
         {
-            _unitWork.GreadeBook.Insert(model);
+            await _unitWork.GradeBook.Insert(_mapper.Map<Gradebook>(model));
             await _unitWork.SaveAsync();
-            return new Response { Code = 1, Message = "", Data = null };
+            return Ok(new Response { Code = 1, Message = "", Data = null });
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Response>> Put(int id, Gradebook model)
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(Response))]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest, Type = typeof(Response))]
+        public async Task<IActionResult> Put(int id, GradeBookDTO model)
         {
             if (id != model.GradebookId)
             {
-                return new Response { Code = 0, Message = "", Data = null };
+                return BadRequest(new Response { Code = 0, Message = "Bad request", Data = null });
             }
-            _unitWork.GreadeBook.Update(model);
+            _unitWork.GradeBook.Update(_mapper.Map<Gradebook>(model));
             await _unitWork.SaveAsync();
 
-            return new Response { Code = 1, Message = "", Data = null };
+            return Ok(new Response { Code = 1, Message = "Successful", Data = null });
         }
         [HttpGet("{id}")]
-        public async Task<ActionResult<Response>> GetById(int id)
-        {
-            var oGradebook = await _unitWork.GreadeBook.GetById(id);
-            if (oGradebook is null)
-            {
-                return new Response { Code = 0, Message = "Not Exists", Data = null };
-            }
-            return new Response { Code = 0, Message = "", Data = oGradebook };
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(Response))]
+        [ProducesResponseType((int)HttpStatusCode.NotFound, Type = typeof(Response))]
 
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<Response>> Delete(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            try
+            var oGradeBook = await _unitWork.GradeBook.GetById(id);
+            if (oGradeBook is null)
             {
-                await _unitWork.GreadeBook.Delete(id);
-                await _unitWork.SaveAsync();
-                return new Response { Code = 1, Message = "", Data = null };
+                return NotFound(new Response { Code = 0, Message = "Not Found", Data = null });
             }
-            catch (Exception)
-            {
-                return new Response { Code = 0, Message = "Not Exists", Data = null };
-            }
+            return Ok(new Response { Code = 1, Message = "", Data = _mapper.Map<GradeBookDTO>(oGradeBook) });
 
         }
     }

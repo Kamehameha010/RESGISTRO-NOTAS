@@ -1,6 +1,6 @@
 ﻿namespace WsSchool.Core.Interfaces
 {
-    internal interface IEncrypt
+    public interface IEncrypt
     {
         string EncryptString(string str);
     }

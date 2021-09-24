@@ -1,6 +1,6 @@
 ﻿namespace WsSchool.Core.Models.DTOs
 {
-    public class GradeBook
+    public class GradeBookDTO
     { 
         public int GradebookId { get; set; }
         public int? StudentId { get; set; }

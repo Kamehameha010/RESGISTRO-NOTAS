@@ -1,7 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
+using WsSchool.Core.Interfaces;
 using WsSchool.Core.Models;
+using WsSchool.Core.Models.DTOs;
 using WsSchool.Core.Models.Entities;
 using WsSchool.Core.Models.Mysql;
 using WsSchool.Core.Repository;
@@ -12,67 +17,58 @@ namespace WsSchool.Controllers
     [ApiController]
     public class StudentController : ControllerBase
     {
-         private readonly SchoolDbContext _context;
-        private readonly UnitWork _unitWork;
+        
+        private readonly IMapper _mapper;
+        private readonly IUnitWork _unitWork;
 
-        public StudentController(SchoolDbContext context)
+        public StudentController(IMapper mapper, IUnitWork work)
         {
-            _context = context;
-            _unitWork = new UnitWork(_context);
-
+            _mapper = mapper;
+            _unitWork = work;
         }
 
         [HttpGet]
-        public async Task<ActionResult<Response>> GetAll()
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(Response))]
+        public async Task<IActionResult> GetAll()
         {
-            return new Response { Code = 1, Message = "", Data = await _unitWork.Student.GetAll() };
+            return Ok(new Response { Code = 1, Message = "", Data = _mapper.Map<IEnumerable<StudentDTO>>(await _unitWork.Student.GetAll()) });
         }
 
         [HttpPost]
-        public async Task<ActionResult<Response>> Post(Student model)
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(Response))]
+        public async Task<IActionResult> Post(StudentDTO model)
         {
-            _unitWork.Student.Insert(model);
+            await _unitWork.Student.Insert(_mapper.Map<Student>(model));
             await _unitWork.SaveAsync();
-            return new Response { Code = 1, Message = "", Data = null };
+            return Ok(new Response { Code = 1, Message = "", Data = null });
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Response>> Put(int id, Student model)
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(Response))]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest, Type = typeof(Response))]
+        public async Task<IActionResult> Put(int id, StudentDTO model)
         {
             if (id != model.StudentId)
             {
-                return new Response { Code = 0, Message = "", Data = null };
+                return BadRequest(new Response { Code = 0, Message = "Bad request", Data = null });
             }
-            _unitWork.Student.Update(model);
+            _unitWork.Student.Update(_mapper.Map<Student>(model));
             await _unitWork.SaveAsync();
 
-            return new Response { Code = 1, Message = "", Data = null };
+            return Ok(new Response { Code = 1, Message = "Successful", Data = null });
         }
         [HttpGet("{id}")]
-        public async Task<ActionResult<Response>> GetById(int id)
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(Response))]
+        [ProducesResponseType((int)HttpStatusCode.NotFound, Type = typeof(Response))]
+
+        public async Task<IActionResult> GetById(int id)
         {
             var oStudent = await _unitWork.Student.GetById(id);
             if (oStudent is null)
             {
-                return new Response { Code = 0, Message = "Not Exists", Data = null };
+                return NotFound(new Response { Code = 0, Message = "Not Found", Data = null });
             }
-            return new Response { Code = 0, Message = "", Data = oStudent };
-
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<Response>> Delete(int id)
-        {
-            try
-            {
-                await _unitWork.Student.Delete(id);
-                await _unitWork.SaveAsync();
-                return new Response { Code = 1, Message = "", Data = null };
-            }
-            catch (Exception)
-            {
-                return new Response { Code = 0, Message = "Not Exists", Data = null };
-            }
+            return Ok(new Response { Code = 1, Message = "", Data = _mapper.Map<StudentDTO>(oStudent) });
 
         }
     }

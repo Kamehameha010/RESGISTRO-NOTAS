@@ -1,6 +1,6 @@
 ﻿namespace WsSchool.Core.Models.DTOs
 {
-    public class Rol
+    public class RolDTO
     {
         public int RolId { get; set; }
         public string Name { get; set; }

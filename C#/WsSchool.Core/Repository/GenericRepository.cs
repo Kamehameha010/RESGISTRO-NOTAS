@@ -18,8 +18,8 @@ namespace WsSchool.Core.Repository
             _context = context;
             _entities = _context.Set<TEntity>();
         }
-        public void Insert(TEntity entity) => _entities.Add(entity);
-        public void Update(TEntity entity) => _context.Entry(entity).State = EntityState.Modified;
+        public async Task Insert(TEntity entity) => await _entities.AddAsync(entity);
+        public void Update(TEntity entity) => _entities.Update(entity);
 
 
         public async Task<IEnumerable<TEntity>> GetAll() => await _entities.ToListAsync();

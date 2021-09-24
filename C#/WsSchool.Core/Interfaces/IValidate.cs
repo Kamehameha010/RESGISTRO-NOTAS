@@ -1,9 +1,10 @@
 ﻿namespace WsSchool.Core.Interfaces
 {
-    internal interface IValidate<T, U>
-        where T : class
-        where U : class
+#nullable enable
+    public interface IValidate<T>
+        where T : class   
     {
-        T Validate(U model);
+        T? Validate(T model);
     }
+#nullable disable
 }

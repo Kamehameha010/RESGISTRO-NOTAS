@@ -1,6 +1,6 @@
 ﻿namespace WsSchool.Core.Models.DTOs
 {
-    public class CoursesStatus
+    public class CoursesStatusDTO
     {
         public int CourseStatusId { get; set; }
         public string Code { get; set; }

@@ -1,6 +1,6 @@
 namespace WsSchool.Core.Models.DTOs
 {
-    public class Teacher
+    public class TeacherDTO
     {
         public int TeacherId { get; set; }
         public int? PersonId { get; set; }
