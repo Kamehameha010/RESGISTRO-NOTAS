@@ -62,11 +62,29 @@ class MainController extends Controller
                 }
                 }
                 else{
-                    return back()->with("fail","User dont exist");
+                    return back()->with("fail","User doesn't exist");
                 }
+    }
 
+    function logout(){
+        if(session()->has('LoggedUser')){
+            session()->pull('LoggedUser');
+            return redirect('/auth/login');
+        }
+    }
 
+    function dashboard(){
+        $data=['LoggedUserInfo'=>User::where('id','=',session('LoggedUser'))->first()];
+        return view("admin.dashboard",$data);
     }
  
+    function settings(){
+        $data=['LoggedUserInfo'=>User::where('id','=',session('LoggedUser'))->first()];
+        return view("admin.settings",$data);
+    }
+    function profile(){
+        $data=['LoggedUserInfo'=>User::where('id','=',session('LoggedUser'))->first()];
+        return view("admin.profile",$data);
+    }
     
 }

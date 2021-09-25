@@ -16,13 +16,13 @@
                    <table class="table table-hover">
                       <thead>
                         <th>Name</th>
-                        <th>Email</th>
+                        <th>ID number</th>
                         <th></th>
                       </thead>
                       <tbody>
                          <tr>
                             <td>{{ $LoggedUserInfo['name'] }}</td>
-                            <td>{{ $LoggedUserInfo['email'] }}</td>
+                            <td>{{ $LoggedUserInfo['id_number'] }}</td>
                             <td><a href="{{ route('auth.logout') }}">Logout</a></td>
                          </tr>
                       </tbody>

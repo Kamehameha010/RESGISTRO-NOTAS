@@ -17,10 +17,22 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/auth/login',[MainController::class,'login'])->name('auth.login');
-Route::get('/auth/register',[MainController::class,'register'])->name('auth.register');
+
 Route::post('/auth/save',[MainController::class,'save'])->name('auth.save');
 Route::post('/auth/check',[MainController::class,'check'])->name('auth.check');
+
+Route::get('/auth/logout',[MainController::class,'logout'])->name('auth.logout');
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+    Route::group(['middleware'=>['AuthCheck']],function(){
+    Route::get('/auth/login',[MainController::class,'login'])->name('auth.login');
+    Route::get('/auth/register',[MainController::class,'register'])->name('auth.register');
+    Route::get('/admin/dashboard',[MainController::class,'dashboard'])->name('admin.dashboard');
+    Route::get('/admin/settings',[MainController::class,'settings'])->name('admin.settings');
+    Route::get('/admin/profile',[MainController::class,'profile'])->name('admin.profile');
+});
+    
+
