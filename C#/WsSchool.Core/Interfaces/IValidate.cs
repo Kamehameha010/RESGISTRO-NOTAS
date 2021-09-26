@@ -1,10 +1,12 @@
-﻿namespace WsSchool.Core.Interfaces
+﻿using System;
+using WsSchool.Core.Models.DTOs;
+
+namespace WsSchool.Core.Interfaces
 {
 #nullable enable
-    public interface IValidate<T>
-        where T : class   
+    public interface IValidate : IDisposable
     {
-        T? Validate(T model);
+        LoginDTO? Validate(AccessDTO model);
     }
 #nullable disable
 }

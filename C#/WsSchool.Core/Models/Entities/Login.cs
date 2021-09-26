@@ -10,7 +10,7 @@ namespace WsSchool.Core.Models.Entities
     {
         public Login()
         {
-            TbPerson = new HashSet<Person>();
+            People = new HashSet<Person>();
         }
 
         public int LoginId { get; set; }
@@ -19,6 +19,6 @@ namespace WsSchool.Core.Models.Entities
         public int? RolId { get; set; }
 
         public virtual Rol Rol { get; set; }
-        public virtual ICollection<Person> TbPerson { get; set; }
+        public virtual ICollection<Person> People { get; set; }
     }
 }

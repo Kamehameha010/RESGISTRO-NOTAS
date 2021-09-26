@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -35,12 +36,15 @@ namespace WsSchool
             {
                 options.AddDefaultPolicy(builder => builder.WithOrigins("*").AllowAnyHeader().AllowAnyMethod());
             });
-            services.AddControllers();
+            services.AddControllers().AddFluentValidation(options=> {
+                options.RegisterValidatorsFromAssemblyContaining <AppDomain> ();
+            });
             services.AddDbContext<Core.Models.Mysql.SchoolDbContext>(options=>options.UseMySQL(Configuration.GetConnectionString("SchoolDb_mysql")));
             services.AddDbContext<Core.Models.Postgresql.SchoolDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("SchoolDb_postgresql")));
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<IUnitWork, UnitWork>();
             services.AddScoped<IEncrypt, EncryptSha256>();
+            services.AddScoped<IValidate, ValidateUser>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "CryptoRest", Version = "v1" });
@@ -66,7 +70,9 @@ namespace WsSchool
 
             app.UseEndpoints(endpoints =>
             {
+
                 endpoints.MapControllers();
+                
             });
         }
     }

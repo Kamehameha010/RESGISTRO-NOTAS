@@ -212,7 +212,7 @@ namespace WsSchool.Core.Models.Postgresql
                     .HasMaxLength(45);
 
                 entity.HasOne(d => d.Login)
-                    .WithMany(p => p.TbPerson)
+                    .WithMany(p => p.People)
                     .HasForeignKey(d => d.LoginId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("tb_person_loginid_fkey");

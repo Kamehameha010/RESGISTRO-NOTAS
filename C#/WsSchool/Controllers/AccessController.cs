@@ -1,15 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using System.Threading.Tasks;
 using WsSchool.Core.Interfaces;
 using WsSchool.Core.Models;
 using WsSchool.Core.Models.DTOs;
-using WsSchool.Core.Models.Mysql;
-using WsSchool.Core.Services;
 
 namespace WsSchool.Controllers
 {
@@ -18,17 +11,17 @@ namespace WsSchool.Controllers
     public class AccessController : ControllerBase
     {
         //private readonly SchoolDbContext _context;
-        private readonly IValidate<LoginDTO> _validate;
+        private readonly IValidate _validate;
 
-        public AccessController()
+        public AccessController( IValidate validate)
         {
-            _validate = new ValidateUser();
+            _validate = validate;
         }
 
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(Response))]
         [ProducesResponseType((int)HttpStatusCode.BadRequest, Type = typeof(Response))]
-        public IActionResult VerifyCredendential(LoginDTO model)
+        public IActionResult VerifyCredendential(AccessDTO model)
         {
             var oUser = _validate.Validate(model);
 

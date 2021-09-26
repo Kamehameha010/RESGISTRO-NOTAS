@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
@@ -8,12 +7,10 @@ using WsSchool.Core.Interfaces;
 using WsSchool.Core.Models;
 using WsSchool.Core.Models.DTOs;
 using WsSchool.Core.Models.Entities;
-using WsSchool.Core.Models.Mysql;
-using WsSchool.Core.Repository;
 
 namespace WsSchool.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class StudentController : ControllerBase
     {
