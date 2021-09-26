@@ -1,3 +1,5 @@
+drop DATABASE schooldb;
+
 CREATE DATABASE schooldb
     WITH 
     OWNER = joel
@@ -24,13 +26,8 @@ CREATE TABLE IF NOT EXISTS tb_rol(
     description varchar(45)
 );
 
-CREATE TABLE IF NOT EXISTS tb_login(
-    loginId integer GENERATED ALWAYS as IDENTITY PRIMARY KEY,
-    username varchar(45) NOT NULL,
-    passsword varchar(100) NOT NULL,
-    rolId integer REFERENCES tb_rol(rolId),
-    UNIQUE(username)
-);
+
+
 
 CREATE TABLE IF NOT EXISTS tb_person(
     personId integer GENERATED ALWAYS as IDENTITY PRIMARY KEY,
@@ -39,8 +36,16 @@ CREATE TABLE IF NOT EXISTS tb_person(
     lastname varchar(45),
     address varchar(45) NOT NULL,
     phone_number varchar(45) NOT NULL,
-    loginId integer REFERENCES tb_login(loginId),
     UNIQUE(nid)
+);
+
+CREATE TABLE IF NOT EXISTS tb_login(
+    loginId integer GENERATED ALWAYS as IDENTITY PRIMARY KEY,
+    username varchar(45) NOT NULL,
+    passsword varchar(100) NOT NULL,
+    rolId integer REFERENCES tb_rol(rolId),
+    personId integer REFERENCES tb_person(personId),
+    UNIQUE(username)
 );
 
 CREATE TABLE IF NOT EXISTS tb_course_status(
@@ -79,3 +84,4 @@ CREATE TABLE IF NOT EXISTS tb_gradebook(
     courseId integer REFERENCES tb_course(courseId),
     status boolean
 );
+
