@@ -24,9 +24,5 @@
     <ProjectReference Include="..\WsSchool.Core\WsSchool.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\People\" />
-  </ItemGroup>
-
 
 </Project>

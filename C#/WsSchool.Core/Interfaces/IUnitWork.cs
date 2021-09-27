@@ -13,6 +13,6 @@ namespace WsSchool.Core.Interfaces
         public IRepository<Gradebook> GradeBook { get; }
         public IRepository<Student> Student { get; }
         public IRepository<Teacher> Teacher { get; }
-        public IRepository<Login> Login { get; }
+        public IRepository<User> User { get; }
     }
 }

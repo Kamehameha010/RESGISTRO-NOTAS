@@ -21,7 +21,7 @@ namespace WsSchool.Core.Models.Mysql
         public virtual DbSet<Course> Course { get; set; }
         public virtual DbSet<CourseStatus> CourseStatus { get; set; }
         public virtual DbSet<Gradebook> Gradebook { get; set; }
-        public virtual DbSet<Login> Login { get; set; }
+        public virtual DbSet<User> User { get; set; }
         public virtual DbSet<Person> Person { get; set; }
         public virtual DbSet<Rol> Rol { get; set; }
         public virtual DbSet<Student> Student { get; set; }
@@ -148,21 +148,24 @@ namespace WsSchool.Core.Models.Mysql
                     .HasConstraintName("FK_GRADE_TEACHER");
             });
 
-            modelBuilder.Entity<Login>(entity =>
+            modelBuilder.Entity<User>(entity =>
             {
-                entity.HasKey(e => e.LoginId)
+                
+                entity.HasKey(e => e.UserId)
                     .HasName("PRIMARY");
 
                 entity.ToTable("tb_login");
 
                 entity.HasIndex(e => e.RolId)
                     .HasName("FK_LOGIN_ROL_idx");
+                entity.HasIndex(e => e.PersonId)
+                    .HasName("FK_LOGIN_PERSON_idx");
 
                 entity.HasIndex(e => e.Username)
                     .HasName("username_UNIQUE")
                     .IsUnique();
 
-                entity.Property(e => e.LoginId).HasColumnName("loginId");
+                entity.Property(e => e.UserId).HasColumnName("loginId");
 
                 entity.Property(e => e.Password)
                     .IsRequired()
@@ -170,14 +173,20 @@ namespace WsSchool.Core.Models.Mysql
                     .HasMaxLength(100);
 
                 entity.Property(e => e.RolId).HasColumnName("rolId");
+                entity.Property(e => e.PersonId).HasColumnName("personId");
 
                 entity.Property(e => e.Username)
                     .IsRequired()
                     .HasColumnName("username")
                     .HasMaxLength(45);
 
+                entity.HasOne(d => d.Person)
+                   .WithMany(p => p.Users)
+                   .HasForeignKey(d => d.PersonId)
+                   .HasConstraintName("FK_LOGIN_PERSON");
+
                 entity.HasOne(d => d.Rol)
-                    .WithMany(p => p.TbLogin)
+                    .WithMany(p => p.Users)
                     .HasForeignKey(d => d.RolId)
                     .HasConstraintName("FK_LOGIN_ROL");
             });
@@ -188,9 +197,6 @@ namespace WsSchool.Core.Models.Mysql
                     .HasName("PRIMARY");
 
                 entity.ToTable("tb_person");
-
-                entity.HasIndex(e => e.LoginId)
-                    .HasName("FK_PERSON_LOGIN_idx");
 
                 entity.HasIndex(e => e.Nid)
                     .HasName("nid_UNIQUE")
@@ -207,7 +213,6 @@ namespace WsSchool.Core.Models.Mysql
                     .HasColumnName("lastname")
                     .HasMaxLength(45);
 
-                entity.Property(e => e.LoginId).HasColumnName("loginId");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
@@ -221,10 +226,6 @@ namespace WsSchool.Core.Models.Mysql
                     .HasColumnName("phone_number")
                     .HasMaxLength(45);
 
-                entity.HasOne(d => d.Login)
-                    .WithMany(p => p.People)
-                    .HasForeignKey(d => d.LoginId)
-                    .HasConstraintName("FK_PERSON_LOGIN");
             });
 
             modelBuilder.Entity<Rol>(entity =>

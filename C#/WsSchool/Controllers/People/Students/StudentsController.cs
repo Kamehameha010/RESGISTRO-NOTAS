@@ -1,49 +1,40 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
-using WsSchool.Core.Interfaces;
 using WsSchool.Core.Models;
 using WsSchool.Core.Models.DTOs;
 using WsSchool.Core.Models.Entities;
 
-namespace WsSchool.Controllers
+namespace WsSchool.Controllers.People
 {
-    [Route("api/v1/[controller]")]
-    [ApiController]
-    public class StudentController : ControllerBase
+    public class StudentsController
     {
-        
-        private readonly IMapper _mapper;
-        private readonly IUnitWork _unitWork;
+    }
 
-        public StudentController(IMapper mapper, IUnitWork work)
-        {
-            _mapper = mapper;
-            _unitWork = work;
-        }
-
-        [HttpGet]
+    public partial class PeopleController
+    {
+        [HttpGet("Students")]
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(Response))]
         public async Task<IActionResult> GetAll()
         {
             return Ok(new Response { Code = 1, Message = "", Data = _mapper.Map<IEnumerable<StudentDTO>>(await _unitWork.Student.GetAll()) });
         }
 
-        [HttpPost]
+        [HttpPost("{id}/Students")]
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(Response))]
-        public async Task<IActionResult> Post(StudentDTO model)
+        public async Task<IActionResult> PostStudent(int id ,StudentDTO model)
         {
+            model.PersonId = id;
             await _unitWork.Student.Insert(_mapper.Map<Student>(model));
             await _unitWork.SaveAsync();
             return Ok(new Response { Code = 1, Message = "", Data = null });
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("Students/{id}")]
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(Response))]
         [ProducesResponseType((int)HttpStatusCode.BadRequest, Type = typeof(Response))]
-        public async Task<IActionResult> Put(int id, StudentDTO model)
+        public async Task<IActionResult> PutStudent(int id, StudentDTO model)
         {
             if (id != model.StudentId)
             {
@@ -54,11 +45,11 @@ namespace WsSchool.Controllers
 
             return Ok(new Response { Code = 1, Message = "Successful", Data = null });
         }
-        [HttpGet("{id}")]
+        [HttpGet("Students/{id}")]
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(Response))]
         [ProducesResponseType((int)HttpStatusCode.NotFound, Type = typeof(Response))]
 
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> GetStudentById(int id)
         {
             var oStudent = await _unitWork.Student.GetById(id);
             if (oStudent is null)

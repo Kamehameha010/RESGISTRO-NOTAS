@@ -6,19 +6,17 @@
 
 namespace WsSchool.Core.Models.Entities
 {
-    public partial class Login
+    public partial class User
     {
-        public Login()
-        {
-            People = new HashSet<Person>();
-        }
-
-        public int LoginId { get; set; }
+        
+        public int UserId { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
         public int? RolId { get; set; }
-
+        public int? PersonId { get; set; }
         public virtual Rol Rol { get; set; }
-        public virtual ICollection<Person> People { get; set; }
+        public virtual Person Person { get; set; }
+
+
     }
 }

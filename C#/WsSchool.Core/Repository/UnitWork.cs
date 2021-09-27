@@ -16,7 +16,7 @@ namespace WsSchool.Core.Repository
         private readonly IRepository<Gradebook> _gradeBook;
         private readonly IRepository<Student> _student;
         private readonly IRepository<Teacher> _teacher;
-        private readonly IRepository<Login> _login;
+        private readonly IRepository<User> _user;
 
         public UnitWork(SchoolDbContext context)
         {
@@ -43,7 +43,7 @@ namespace WsSchool.Core.Repository
         public IRepository<Gradebook> GradeBook => _gradeBook ?? new GenericRepository<Gradebook>(_context);
         public IRepository<Student> Student => _student ?? new GenericRepository<Student>(_context);
         public IRepository<Teacher> Teacher => _teacher ?? new GenericRepository<Teacher>(_context);
-        public IRepository<Login> Login => _login ?? new GenericRepository<Login>(_context);
+        public IRepository<User> User => _user ?? new GenericRepository<User>(_context);
 
 
     }

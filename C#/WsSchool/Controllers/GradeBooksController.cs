@@ -12,12 +12,12 @@ namespace WsSchool.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class GradeBookController : ControllerBase
+    public class GradeBooksController : ControllerBase
     {
         private readonly IMapper _mapper;
         private readonly IUnitWork _unitWork;
 
-        public GradeBookController(IMapper mapper, IUnitWork work)
+        public GradeBooksController(IMapper mapper, IUnitWork work)
         {
             _mapper = mapper;
             _unitWork = work;

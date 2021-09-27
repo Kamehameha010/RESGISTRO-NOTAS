@@ -4,7 +4,7 @@ using WsSchool.Core.Models.DTOs;
 
 namespace WsSchool.Core.Validations
 {
-    public class LoginValidation : AbstractValidator<LoginDTO>
+    public class LoginValidation : AbstractValidator<UserDTO>
     {
         public LoginValidation()
         {

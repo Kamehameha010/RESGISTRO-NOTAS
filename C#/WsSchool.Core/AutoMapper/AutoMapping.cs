@@ -25,8 +25,8 @@ namespace WsSchool.Core.AutoMapper
             CreateMap<GradeBookDTO, Gradebook>();
 
             //Login Profile
-            CreateMap<Login, LoginDTO>();
-            CreateMap<LoginDTO, Login>();
+            CreateMap<User, UserDTO>();
+            CreateMap<UserDTO, User>();
 
             //Student Profile
             CreateMap<Student, StudentDTO>();

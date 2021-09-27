@@ -21,7 +21,7 @@ namespace WsSchool.Core.Models.Postgresql
         public virtual DbSet<Course> Course { get; set; }
         public virtual DbSet<CourseStatus> CourseStatus { get; set; }
         public virtual DbSet<Gradebook> Gradebook { get; set; }
-        public virtual DbSet<Login> Login { get; set; }
+        public virtual DbSet<User> Login { get; set; }
         public virtual DbSet<Person> Person { get; set; }
         public virtual DbSet<Rol> Rol { get; set; }
         public virtual DbSet<Student> Student { get; set; }
@@ -139,9 +139,9 @@ namespace WsSchool.Core.Models.Postgresql
                     .HasConstraintName("tb_gradebook_teacherid_fkey");
             });
 
-            modelBuilder.Entity<Login>(entity =>
+            modelBuilder.Entity<User>(entity =>
             {
-                entity.HasKey(e => e.LoginId)
+                entity.HasKey(e => e.UserId)
                     .HasName("tb_login_pkey");
 
                 entity.ToTable("tb_login");
@@ -150,7 +150,7 @@ namespace WsSchool.Core.Models.Postgresql
                     .HasName("tb_login_username_key")
                     .IsUnique();
 
-                entity.Property(e => e.LoginId)
+                entity.Property(e => e.UserId)
                     .HasColumnName("loginid")
                     .UseIdentityAlwaysColumn();
 
@@ -159,6 +159,7 @@ namespace WsSchool.Core.Models.Postgresql
                     .HasColumnName("passsword")
                     .HasMaxLength(100);
 
+                entity.Property(e => e.PersonId).HasColumnName("personid");
                 entity.Property(e => e.RolId).HasColumnName("rolid");
 
                 entity.Property(e => e.Username)
@@ -166,8 +167,13 @@ namespace WsSchool.Core.Models.Postgresql
                     .HasColumnName("username")
                     .HasMaxLength(45);
 
+                entity.HasOne(d => d.Person)
+                    .WithMany(p => p.Users)
+                    .HasForeignKey(d => d.PersonId)
+                    .HasConstraintName("tb_login_personid_fkey");
+
                 entity.HasOne(d => d.Rol)
-                    .WithMany(p => p.TbLogin)
+                    .WithMany(p => p.Users)
                     .HasForeignKey(d => d.RolId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("tb_login_rolid_fkey");
@@ -197,7 +203,6 @@ namespace WsSchool.Core.Models.Postgresql
                     .HasColumnName("lastname")
                     .HasMaxLength(45);
 
-                entity.Property(e => e.LoginId).HasColumnName("loginid");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
@@ -210,12 +215,6 @@ namespace WsSchool.Core.Models.Postgresql
                     .IsRequired()
                     .HasColumnName("phone_number")
                     .HasMaxLength(45);
-
-                entity.HasOne(d => d.Login)
-                    .WithMany(p => p.People)
-                    .HasForeignKey(d => d.LoginId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("tb_person_loginid_fkey");
             });
 
             modelBuilder.Entity<Rol>(entity =>

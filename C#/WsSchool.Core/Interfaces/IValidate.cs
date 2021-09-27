@@ -6,7 +6,7 @@ namespace WsSchool.Core.Interfaces
 #nullable enable
     public interface IValidate : IDisposable
     {
-        LoginDTO? Validate(AccessDTO model);
+        UserDTO? Validate(AccessDTO model);
     }
 #nullable disable
 }

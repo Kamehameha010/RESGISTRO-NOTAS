@@ -15,7 +15,6 @@ namespace WsSchool.Core.Services
 #nullable enable
     public class ValidateUser : IValidate
     {
-        //private readonly IUnitWork _unitWork;
         private readonly SchoolDbContext _context;
         private readonly IEncrypt _encrypt;
         public ValidateUser(SchoolDbContext context, IEncrypt encrypt)
@@ -24,11 +23,11 @@ namespace WsSchool.Core.Services
             _encrypt = new EncryptSha256();
         }
 
-        public LoginDTO? Validate(AccessDTO model)
+        public UserDTO? Validate(AccessDTO model)
         {
-            return _context.Login.Where(x => x.Username.Equals(model.Username) && x.Password.Equals(_encrypt.EncryptString(model.Password)))
-                .Select(x => new LoginDTO {
-                    LoginId = 0,
+            return _context.User.Where(x => x.Username.Equals(model.Username) && x.Password.Equals(_encrypt.EncryptString(model.Password)))
+                .Select(x => new UserDTO {
+                    UserId = 0,
                     Username = x.Username,
                     Password = "",
                     RolId = x.RolId

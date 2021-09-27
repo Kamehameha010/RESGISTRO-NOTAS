@@ -10,13 +10,13 @@ namespace WsSchool.Core.Models.Entities
     {
         public Rol()
         {
-            TbLogin = new HashSet<Login>();
+            Users = new HashSet<User>();
         }
 
         public int RolId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
 
-        public virtual ICollection<Login> TbLogin { get; set; }
+        public virtual ICollection<User> Users { get; set; }
     }
 }
