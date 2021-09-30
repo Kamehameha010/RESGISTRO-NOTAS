@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Threading.Tasks;
 using WsSchool.Core.Models;
+using WsSchool.Core.Models.DTOs;
 
 namespace School.UI.Services
 {
-    public interface IHttpRequest<T> : IDisposable where T : class, new()
+    public interface IHttpRequest<T,I> : IDisposable where I : class, new()
     {
-        Task<Response> Post(T model, string url, int? id =null);
-        Task<Response> Put(int id, T model, string url);
-        Task<Response> Get(string url);
-        Task<Response> Delete(string url);
+        Task<Response<T>> Post(I model, string url, int? id =null);
+        Task<Response<T>> Put(int id, I model, string url);
+        Task<Response<T>> Get(string url);
+        Task<Response<T>> Delete(string url);
     }
 }

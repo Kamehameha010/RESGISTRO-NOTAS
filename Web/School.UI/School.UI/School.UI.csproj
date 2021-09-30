@@ -4,4 +4,14 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="WsSchool.Core">
+      <HintPath>..\..\..\..\..\backend\RESGISTRO-NOTAS\C#\WsSchool.Core\bin\Debug\netcoreapp3.1\WsSchool.Core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

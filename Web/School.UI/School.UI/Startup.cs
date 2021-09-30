@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using School.UI.Config;
+using School.UI.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +25,14 @@ namespace School.UI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IApiConfig, ApiConfig>();
+            //services.AddScoped<IHttpResponse, HttpResponse>();
+            //services.AddScoped(typeof(IHttpRequest<>),typeof(HttpRequest<>));
+            services.AddSession(s => s.IdleTimeout = TimeSpan.FromMinutes(30));
+            services.AddScoped(typeof(IHttpResponse<>), typeof(HttpResponse<>));
+            services.AddScoped(typeof(IHttpRequest<,>), typeof(HttpRequest<,>));
             services.AddControllersWithViews();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,14 +52,14 @@ namespace School.UI
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseSession();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Access}/{action=Index}/{id?}");
             });
         }
     }
