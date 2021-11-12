@@ -6,7 +6,7 @@ namespace SchoolSystem.Core.Interfaces
 {
     public interface IUnitWork : IDisposable, IAsyncDisposable
     {
-        IRepository<Course> Courses { get; }
+        ICourseRepository Courses { get; }
         IRepository<User> Users { get; }
         IStudentRepository Students { get; }
         ITeacherRepository Teachers { get; }

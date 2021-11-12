@@ -44,5 +44,23 @@ namespace SchoolSystem.Api.Controller
             return Ok(new { userDTO, studentDTO });
         }
 
+        [HttpPut]
+        public async Task<IActionResult> Put(UserStudentDTO model)
+        {
+            var (userDTO, studentDTO) = model;
+            var user = _mapper.Map<User>(userDTO);
+
+            _unitWork.Users.Update(user);
+            studentDTO.UserId = user.UserId;
+
+            var student = _mapper.Map<Student>(studentDTO);
+            _unitWork.Students.Update(student);
+
+            await _unitWork.SaveAsync();
+            userDTO = _mapper.Map<UserDTO>(user);
+            studentDTO = _mapper.Map<StudentDTO>(student);
+            return Ok(new { userDTO, studentDTO });
+        }
+
     }
 }

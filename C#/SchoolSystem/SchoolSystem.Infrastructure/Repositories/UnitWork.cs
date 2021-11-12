@@ -10,7 +10,7 @@ namespace SchoolSystem.Infrastructure.Repositories
     {
 #pragma warning disable CS0649
         private readonly SchoolDBContext _context;
-        private readonly IRepository<Course> _course;
+        private readonly ICourseRepository _course;
         private readonly IRepository<CourseGradebook> _courseGradebook;
         private readonly ITeacherRepository _teacher;
         private readonly IStudentRepository _student;
@@ -20,7 +20,7 @@ namespace SchoolSystem.Infrastructure.Repositories
 #pragma warning restore CS0649
         public UnitWork(SchoolDBContext context) => _context = context;
 
-        public IRepository<Course> Courses => _course ?? new BaseRepository<Course>(_context);
+        public ICourseRepository Courses => _course ?? new CourseRepository(_context);
 
         public IRepository<User> Users => _user ?? new BaseRepository<User>(_context);
 
