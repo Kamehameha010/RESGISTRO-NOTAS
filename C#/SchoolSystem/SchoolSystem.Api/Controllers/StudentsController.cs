@@ -4,6 +4,7 @@ using SchoolSystem.Api.Response;
 using SchoolSystem.Core.DTOs;
 using SchoolSystem.Core.Entities;
 using SchoolSystem.Core.Interfaces;
+using SchoolSystem.Core.QueryFilters;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -24,17 +25,17 @@ namespace SchoolSystem.Api.Controller
         }
 
         [HttpGet]
-        public IActionResult GetAll() => Ok(new ApiResponse<object> { Data = _unitWork.Students.GetUsers() });
+        public IActionResult GetAll() => Ok(new ApiResponse<object> { Data = _unitWork.Students.GetStudents() });
+        [HttpGet("courses")]
+        public IActionResult GetStudentCourse([FromQuery] CourseFilter filter) => Ok(new ApiResponse<object> { Data = _unitWork.Students.GetStudentCourse(filter) });
         [HttpPost]
         public async Task<IActionResult> Post(UserStudentDTO model)
         {
             var (userDTO, studentDTO) = model;
             var user = _mapper.Map<User>(userDTO);
-
             await _unitWork.Users.AddAsync(user);
             await _unitWork.SaveAsync();
             studentDTO.UserId = user.UserId;
-
             var student = _mapper.Map<Student>(studentDTO);
 
             await _unitWork.Students.AddAsync(student);

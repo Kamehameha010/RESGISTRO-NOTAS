@@ -19,21 +19,21 @@ namespace SchoolSystem.Infrastructure.Data.Configuration
 
             builder.Property(e => e.Average)
                 .HasColumnName("average")
-                .HasColumnType("numeric(3,2)");
+                .HasColumnType("numeric(5,2)");
 
             builder.Property(e => e.CourseId).HasColumnName("courseid");
 
             builder.Property(e => e.Q1)
                 .HasColumnName("q1")
-                .HasColumnType("numeric(3,2)");
+                .HasColumnType("numeric(5,2)");
 
             builder.Property(e => e.Q2)
                 .HasColumnName("q2")
-                .HasColumnType("numeric(3,2)");
+                .HasColumnType("numeric(5,2)");
 
             builder.Property(e => e.Q3)
                 .HasColumnName("q3")
-                .HasColumnType("numeric(3,2)");
+                .HasColumnType("numeric(5,2)");
 
             builder.Property(e => e.Status).HasColumnName("status");
 

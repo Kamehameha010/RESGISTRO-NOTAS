@@ -5,6 +5,7 @@ using SchoolSystem.Core.Interfaces;
 using SchoolSystem.Core.DTOs;
 using SchoolSystem.Core.Entities;
 using System.Threading.Tasks;
+using SchoolSystem.Core.QueryFilters;
 
 namespace SchoolSystem.Api.Controller
 {
@@ -24,7 +25,8 @@ namespace SchoolSystem.Api.Controller
 
         [HttpGet]
         public IActionResult GetAll() => Ok(new ApiResponse<object> { Data = _unitWork.Teachers.GetTeaches() });
-
+        [HttpGet("courses")]
+        public IActionResult GetStudentCourse([FromQuery] CourseFilter filter) => Ok(new ApiResponse<object> { Data = _unitWork.Teachers.GetCoursesbyTeacher(filter) });
         [HttpPost]
         public async Task<IActionResult> Post(UserTeacherDTO model)
         {

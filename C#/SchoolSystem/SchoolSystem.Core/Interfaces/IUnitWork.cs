@@ -8,6 +8,7 @@ namespace SchoolSystem.Core.Interfaces
     {
         ICourseRepository Courses { get; }
         IRepository<User> Users { get; }
+        ISecurityRepository securitt { get; }
         IStudentRepository Students { get; }
         ITeacherRepository Teachers { get; }
         IRepository<CourseGradebook> CourseGradebooks { get; }

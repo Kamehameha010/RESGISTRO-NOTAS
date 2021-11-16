@@ -7,6 +7,6 @@ namespace SchoolSystem.Core.Interfaces
 {
     public interface ICourseReport
     {
-       IEnumerable<CourseReport> CourseReports(CourseFilters filters);
+       IEnumerable<CourseReport> CourseReports(CourseReportFilter filters);
     }
 }

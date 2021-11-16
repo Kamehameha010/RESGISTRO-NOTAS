@@ -13,7 +13,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using SchoolSystem.Core.Interfaces;
 using SchoolSystem.Infrastructure.Data;
+using SchoolSystem.Infrastructure.Interfaces;
 using SchoolSystem.Infrastructure.Repositories;
+using SchoolSystem.Infrastructure.Services;
 
 namespace SchoolSystem.Api
 {
@@ -34,9 +36,8 @@ namespace SchoolSystem.Api
 
             services.AddDbContext<SchoolDBContext>(options => options.UseNpgsql(Configuration.GetConnectionString("SchoolDB_PostgreSql")));
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-            services.AddScoped<IUnitWork, UnitWork>();
-            services.AddScoped<ISecurityRepository, SecurityRepository>();
-            
+            services.AddTransient<IUnitWork, UnitWork>();
+            services.AddScoped<IPasswordService, PasswordService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

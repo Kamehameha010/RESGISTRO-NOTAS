@@ -13,7 +13,7 @@ namespace SchoolSystem.Infrastructure.Services
         private readonly SchoolDBContext _context;
         public ReportService(SchoolDBContext context) => _context = context;
 
-        public IEnumerable<CourseReport> CourseReports(CourseFilters filters)
+        public IEnumerable<CourseReport> CourseReports(CourseReportFilter filters)
         {
             var courses = _context.Course.ToList();
 

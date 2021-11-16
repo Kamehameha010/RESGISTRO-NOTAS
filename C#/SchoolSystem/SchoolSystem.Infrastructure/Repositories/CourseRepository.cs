@@ -22,7 +22,6 @@ namespace SchoolSystem.Infrastructure.Repositories
                 throw new NullReferenceException("Not Found course");
             }
             course.CourseStatusId = (int?)CourseState.CLOSE;
-            Update(course);
         }
 
         public async Task<Course> FindAsync(int id) => await _context.Course.FindAsync(id);

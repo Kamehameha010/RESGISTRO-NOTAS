@@ -16,6 +16,7 @@ namespace SchoolSystem.Infrastructure.Repositories
         private readonly IStudentRepository _student;
         private readonly IRepository<User> _user;
         private readonly IRepository<Rol> _rol;
+        private readonly ISecurityRepository _security;
 
 #pragma warning restore CS0649
         public UnitWork(SchoolDBContext context) => _context = context;
@@ -31,6 +32,9 @@ namespace SchoolSystem.Infrastructure.Repositories
         public IRepository<CourseGradebook> CourseGradebooks => _courseGradebook ?? new BaseRepository<CourseGradebook>(_context);
 
         public IRepository<Rol> Roles => _rol ?? new BaseRepository<Rol>(_context);
+
+        public ISecurityRepository securitt => _security ?? new SecurityRepository(_context);
+
         public void Save() => _context.SaveChanges();
         public async Task SaveAsync() => await _context.SaveChangesAsync();
 

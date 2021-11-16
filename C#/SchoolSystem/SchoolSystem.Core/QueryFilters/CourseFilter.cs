@@ -1,13 +1,12 @@
 namespace SchoolSystem.Core.QueryFilters
 {
-
-    public class CourseFilters
+    public class CourseFilter
     {
-        public string Course { get; set; }
-        public bool NeedAverage { get; set; } = false;
-        public bool NeedStatus { get; set; } = false;
+        public int? StudentId { get; set; }
+        public int? TeacherId { get; set; }
+        public string Name { get; set; }
+        public int? CourseId { get; set; }
+        public string CourseName { get; set; }
 
     }
-#nullable disable
-
 }
