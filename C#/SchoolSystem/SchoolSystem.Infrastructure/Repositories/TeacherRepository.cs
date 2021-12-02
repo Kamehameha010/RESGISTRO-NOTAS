@@ -52,7 +52,7 @@ namespace SchoolSystem.Infrastructure.Repositories
             return result;
         }
 
-        public IEnumerable GetTeaches() => _context.ViewTeacher;
+        public IEnumerable GetTeachers() => _context.ViewTeacher;
 
         public void Update(Teacher model) => _context.Teacher.Update(model);
     }

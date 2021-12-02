@@ -6,6 +6,8 @@ using SchoolSystem.Core.DTOs;
 using SchoolSystem.Core.Entities;
 using System.Threading.Tasks;
 using SchoolSystem.Core.QueryFilters;
+using System;
+using System.Collections;
 
 namespace SchoolSystem.Api.Controller
 {
@@ -24,9 +26,14 @@ namespace SchoolSystem.Api.Controller
         }
 
         [HttpGet]
-        public IActionResult GetAll() => Ok(new ApiResponse<object> { Data = _unitWork.Teachers.GetTeaches() });
+        public IActionResult GetAll() => Ok(new ApiResponse<object> { Data =_unitWork.Teachers.GetTeachers()});
         [HttpGet("courses")]
         public IActionResult GetStudentCourse([FromQuery] CourseFilter filter) => Ok(new ApiResponse<object> { Data = _unitWork.Teachers.GetCoursesbyTeacher(filter) });
+        [HttpGet("gradebook")]
+        public IActionResult GetGradebook([FromQuery] int teacherId, [FromQuery] int courseId)
+        {
+            return Ok(new ApiResponse<IEnumerable> { Data = _unitWork.CourseGradebooks.GetGradebookTeacher(teacherId) });
+        }
         [HttpPost]
         public async Task<IActionResult> Post(UserTeacherDTO model)
         {
@@ -45,7 +52,6 @@ namespace SchoolSystem.Api.Controller
             teacherDTO = _mapper.Map<TeacherDTO>(teacher);
             return Ok(new { userDTO, teacherDTO });
         }
-
         [HttpPut]
         public async Task<IActionResult> Put(UserTeacherDTO model)
         {
@@ -63,5 +69,7 @@ namespace SchoolSystem.Api.Controller
             teacherDTO = _mapper.Map<TeacherDTO>(teacher);
             return Ok(new { userDTO, teacherDTO });
         }
+
+
     }
 }

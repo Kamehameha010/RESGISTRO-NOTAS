@@ -6,7 +6,7 @@ namespace SchoolSystem.Infrastructure.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            string StudentUserQuery = @"
+            string studentUserQuery = @"
                 CREATE OR REPLACE VIEW VWStudentUser
                 AS
                 SELECT tu.userid,
@@ -23,7 +23,7 @@ namespace SchoolSystem.Infrastructure.Migrations
                 FROM tb_user tu
                     JOIN tb_student ts ON tu.userid = ts.userid;
             ";
-            string TeacherUserQuery = @"
+            string teacherUserQuery = @"
                 CREATE OR REPLACE VIEW VWTeacherUser
                 AS
                 SELECT tu.userid,
@@ -39,15 +39,18 @@ namespace SchoolSystem.Infrastructure.Migrations
                     ttc.subject
                 FROM tb_user tu
                     JOIN tb_teacher ttc ON tu.userid = ttc.userid;
-            ";;
-            migrationBuilder.Sql(StudentUserQuery);
-            migrationBuilder.Sql(TeacherUserQuery);
+            "; ;
+
+           
+            migrationBuilder.Sql(studentUserQuery);
+            migrationBuilder.Sql(teacherUserQuery);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.Sql(@"DROP VIEW VWStudentUser");
             migrationBuilder.Sql(@"DROP VIEW VWTeacherUser");
+            migrationBuilder.Sql(@"DROP VIEW VWGradebook");
         }
     }
 }

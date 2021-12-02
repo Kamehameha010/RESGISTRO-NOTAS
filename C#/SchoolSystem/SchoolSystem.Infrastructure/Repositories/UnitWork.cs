@@ -11,7 +11,7 @@ namespace SchoolSystem.Infrastructure.Repositories
 #pragma warning disable CS0649
         private readonly SchoolDBContext _context;
         private readonly ICourseRepository _course;
-        private readonly IRepository<CourseGradebook> _courseGradebook;
+        private readonly IGradebookRepository _courseGradebook;
         private readonly ITeacherRepository _teacher;
         private readonly IStudentRepository _student;
         private readonly IRepository<User> _user;
@@ -29,7 +29,7 @@ namespace SchoolSystem.Infrastructure.Repositories
 
         public ITeacherRepository Teachers => _teacher ?? new TeacherRepository(_context);
 
-        public IRepository<CourseGradebook> CourseGradebooks => _courseGradebook ?? new BaseRepository<CourseGradebook>(_context);
+        public IGradebookRepository CourseGradebooks => _courseGradebook ?? new GradebookRepository(_context);
 
         public IRepository<Rol> Roles => _rol ?? new BaseRepository<Rol>(_context);
 

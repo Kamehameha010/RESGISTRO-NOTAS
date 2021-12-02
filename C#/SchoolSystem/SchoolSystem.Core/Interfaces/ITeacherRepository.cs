@@ -6,7 +6,7 @@ namespace SchoolSystem.Core.Interfaces
 {
     public interface ITeacherRepository : ICreate<Teacher>, IUpdate<Teacher>, IRead<Teacher>
     {
-        IEnumerable GetTeaches();
+        IEnumerable GetTeachers();
         IEnumerable GetCoursesbyTeacher(CourseFilter filter);
     }
 }

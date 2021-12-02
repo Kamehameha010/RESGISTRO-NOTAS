@@ -11,7 +11,7 @@ namespace SchoolSystem.Core.Interfaces
         ISecurityRepository securitt { get; }
         IStudentRepository Students { get; }
         ITeacherRepository Teachers { get; }
-        IRepository<CourseGradebook> CourseGradebooks { get; }
+        IGradebookRepository CourseGradebooks { get; }
         IRepository<Rol> Roles { get; }
 
         void Save();
