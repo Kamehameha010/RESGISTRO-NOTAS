@@ -1,36 +1,26 @@
 package org.com.schoolsystem.core.entities;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import lombok.Data;
+
+@Entity
+@Table(name = "tb_course")
+@Data
 public class Course {
 
-    private int courseId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "courseid")
+    private Integer courseId;
     private String code;
     private String name;
-    private int courseStatus;
-    
-    public int getCourseId() {
-        return courseId;
-    }
-    public void setCourseId(int courseId) {
-        this.courseId = courseId;
-    }
-    public String getCode() {
-        return code;
-    }
-    public void setCode(String code) {
-        this.code = code;
-    }
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
-    public int getCourseStatus() {
-        return courseStatus;
-    }
-    public void setCourseStatus(int courseStatus) {
-        this.courseStatus = courseStatus;
-    }
-    
+    @Column(name = "coursestatusid")
+    private Integer courseStatusId;
 
 }

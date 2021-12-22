@@ -1,9 +1,17 @@
 package org.com.schoolsystem.core.queryFilters;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString
 public class CourseFilter {
-    public int studentId;
-    public int teacherId;
-    public String name;
-    public int courseId;
-    public String courseName;
+
+    private int studentId;
+    private int teacherId;
+    private String name;
+    private int courseId;
+    private String courseName;
 }
