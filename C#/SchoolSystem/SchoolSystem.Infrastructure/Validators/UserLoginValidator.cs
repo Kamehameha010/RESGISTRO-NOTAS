@@ -3,7 +3,7 @@ using SchoolSystem.Core.Entities;
 
 namespace SchoolSystem.Infrastructure.Validators
 {
-    public class UserLoginValidator : AbstractValidator<userLogin>
+    public class UserLoginValidator : AbstractValidator<UserLogin>
     {
         public UserLoginValidator()
         {

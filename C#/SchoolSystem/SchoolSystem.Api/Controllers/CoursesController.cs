@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +13,7 @@ namespace SchoolSystem.Api.Controller
 {
     [Route("api/v1/[controller]")]
     [ApiController]
+    [Produces("application/json")]
     public class CoursesController : ControllerBase
     {
         private readonly IMapper _mapper;
@@ -24,20 +26,28 @@ namespace SchoolSystem.Api.Controller
         }
 
         [HttpGet]
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<CourseDTO>))]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public IActionResult GetAll()
         {
             var courses = _mapper.Map<IEnumerable<CourseDTO>>(_unitWork.Courses.GetCourses());
             return Ok(new ApiResponse<IEnumerable<CourseDTO>> { Data = courses });
         }
         [HttpGet("{id}")]
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<CourseDTO>))]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<IActionResult> Get(int id)
         {
             var course = _mapper.Map<CourseDTO>(await _unitWork.Courses.FindAsync(id));
-
+            if (course != null)
+            {
+                return NotFound();
+            }
             return Ok(new ApiResponse<CourseDTO> { Data = course });
         }
 
         [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<CourseDTO>))]
         public async Task<IActionResult> Post(CourseDTO model)
         {
             var course = _mapper.Map<Course>(model);
@@ -47,6 +57,7 @@ namespace SchoolSystem.Api.Controller
         }
 
         [HttpPut]
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<CourseDTO>))]
         public async Task<IActionResult> Put(CourseDTO model)
         {
             var course = _mapper.Map<Course>(model);
@@ -56,15 +67,20 @@ namespace SchoolSystem.Api.Controller
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int? id)
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> Delete(int id)
         {
-            if (id == null)
+            try
             {
-                throw new ArgumentNullException($"{nameof(id)} is empty");
+                await _unitWork.Courses.DeleteAsync(id);
+                await _unitWork.SaveAsync();
+                return NoContent();
             }
-            await _unitWork.Courses.DeleteAsync((int)id);
-            await _unitWork.SaveAsync();
-            return NoContent();
+            catch (NullReferenceException)
+            {
+                return NotFound();
+            }
         }
     }
 }

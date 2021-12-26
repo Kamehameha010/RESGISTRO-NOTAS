@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace SchoolSystem.Core.Entities.Results
 {
+    //TODO
     public class CourseResult
     {
         public int CourseId { get; set; }

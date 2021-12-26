@@ -1,6 +1,6 @@
 namespace SchoolSystem.Core.QueryFilters
 {
-    public class CourseFilter
+    public class GradebookFilter
     {
         public int? StudentId { get; set; }
         public int? TeacherId { get; set; }

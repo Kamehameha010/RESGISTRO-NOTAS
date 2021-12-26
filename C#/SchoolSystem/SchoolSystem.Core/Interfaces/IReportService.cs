@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace SchoolSystem.Core.Interfaces
 {
-    public interface ICourseReport
+    public interface IReportService
     {
        IEnumerable<CourseReport> CourseReports(CourseReportFilter filters);
     }

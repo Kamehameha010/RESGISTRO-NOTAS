@@ -6,13 +6,14 @@ using SchoolSystem.Core.Entities;
 using SchoolSystem.Core.Interfaces;
 using SchoolSystem.Core.QueryFilters;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace SchoolSystem.Api.Controller
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-
+    [Produces("application/json")]
     public class StudentsController : ControllerBase
     {
         private readonly IMapper _mapper;
@@ -25,10 +26,13 @@ namespace SchoolSystem.Api.Controller
         }
 
         [HttpGet]
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<object>))]
         public IActionResult GetAll() => Ok(new ApiResponse<object> { Data = _unitWork.Students.GetStudents() });
         [HttpGet("courses")]
-        public IActionResult GetStudentCourse([FromQuery] CourseFilter filter) => Ok(new ApiResponse<object> { Data = _unitWork.Students.GetStudentCourse(filter) });
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<object>))]
+        public IActionResult GetStudentCourse([FromQuery] GradebookFilter filter) => Ok(new ApiResponse<object> { Data = _unitWork.CourseGradebooks.GetGradebookByStudent(filter) });
         [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<object>))]
         public async Task<IActionResult> Post(UserStudentDTO model)
         {
             var (userDTO, studentDTO) = model;
@@ -46,6 +50,7 @@ namespace SchoolSystem.Api.Controller
         }
 
         [HttpPut]
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<object>))]
         public async Task<IActionResult> Put(UserStudentDTO model)
         {
             var (userDTO, studentDTO) = model;

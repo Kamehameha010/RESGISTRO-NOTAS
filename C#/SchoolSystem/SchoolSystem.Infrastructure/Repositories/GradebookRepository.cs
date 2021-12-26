@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using SchoolSystem.Core.Entities;
 using SchoolSystem.Core.Entities.Results;
 using SchoolSystem.Core.Interfaces;
+using SchoolSystem.Core.QueryFilters;
 using SchoolSystem.Infrastructure.Data;
 
 namespace SchoolSystem.Infrastructure.Repositories
@@ -15,12 +16,46 @@ namespace SchoolSystem.Infrastructure.Repositories
 
         public GradebookRepository(SchoolDBContext context) => _context = context;
         public async Task AddAsync(CourseGradebook model) => await _context.CourseGradebook.AddAsync(model);
-
-
-
-        public IEnumerable<TeacherResult> GetGradebookTeacher(int teacherId)
+        public IEnumerable GetGradebookByStudent(GradebookFilter filter)
         {
-            return _context.ViewTeacher.Where(x => x.TeacherId == teacherId).ToList()
+
+            var students = _context.ViewStudent.AsQueryable();
+
+            if (filter.StudentId != null)
+            {
+                students = students.Where(x => x.StudentId == filter.StudentId);
+            }
+
+            if (!string.IsNullOrEmpty(filter.Name))
+            {
+                students = students.Where(x => x.Name.ToLower().Contains(filter.Name.ToLower()) || x.Lastname.ToLower().Contains(filter.Name.ToLower()));
+            }
+
+            var result = from vs in students.ToList()
+                         join cg in _context.CourseGradebook on vs.StudentId equals cg.StudentId into grs
+                         select new
+                         {
+                             StudentId = vs.StudentId,
+                             FullName = $"{vs.Name} {vs.Lastname ?? string.Empty}".Trim(),
+                             Courses = from gd in grs
+                                       join c in _context.Course on gd.CourseId equals c.CourseId
+                                       select new
+                                       {
+                                           CourseId = c.CourseId,
+                                           Name = c.Name,
+                                           N1 = gd.Q1,
+                                           N2 = gd.Q2,
+                                           N3 = gd.Q3,
+                                           Average = gd.Average
+                                       }
+                         };
+
+            return result;
+        }
+
+        public IEnumerable<TeacherResult> GetGradebookByTeacher(GradebookFilter filter)
+        {
+            return _context.ViewTeacher.Where(x => x.TeacherId == filter.TeacherId).ToList()
                    .Select(a =>
                    new TeacherResult
                    {
@@ -47,8 +82,6 @@ namespace SchoolSystem.Infrastructure.Repositories
                    });
 
         }
-
-       
 
         public void Update(CourseGradebook model) => _context.CourseGradebook.Update(model);
     }

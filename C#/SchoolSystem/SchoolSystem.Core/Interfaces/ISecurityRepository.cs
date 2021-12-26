@@ -5,8 +5,7 @@ namespace SchoolSystem.Core.Interfaces
 {
     public interface ISecurityRepository
     {
-#nullable enable
-        Task<Security>? CheckUserAsync(userLogin model);
-#nullable disable
+        Task<Security> CheckUserAsync(UserLogin model);
+
     }
 }

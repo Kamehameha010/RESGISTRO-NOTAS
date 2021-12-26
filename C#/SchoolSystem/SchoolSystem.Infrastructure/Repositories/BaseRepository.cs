@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,12 +24,16 @@ namespace SchoolSystem.Infrastructure.Repositories
         public async Task DeleteAsync(int id)
         {
             var oEntity = await FindAsync(id);
-            _entities.Remove(oEntity);
+            if (oEntity != null)
+            {
+                _entities.Remove(oEntity);
+            }
+            throw new NullReferenceException();
         }
 
         public async Task<TEntity> FindAsync(int id) => await _entities.FindAsync(id);
 
-        public IEnumerable<TEntity> GetAll() =>  _entities.AsEnumerable();
+        public IEnumerable<TEntity> GetAll() => _entities.AsEnumerable();
 
         public void Update(TEntity model) => _entities.Update(model);
     }

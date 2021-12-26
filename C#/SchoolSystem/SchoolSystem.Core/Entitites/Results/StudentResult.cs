@@ -2,6 +2,7 @@ namespace SchoolSystem.Core.Entities.Results
 {
     public class StudentResult
     {
+        //TODO
         public int StudentId { get; set; }
         public string Fullname { get; set; }
         public decimal? Q1 { get; set; }

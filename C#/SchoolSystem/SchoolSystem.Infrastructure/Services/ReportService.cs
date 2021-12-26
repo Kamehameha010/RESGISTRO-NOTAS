@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace SchoolSystem.Infrastructure.Services
 {
-    public class ReportService : ICourseReport
+    public class ReportService : IReportService
     {
 #nullable enable
         private readonly SchoolDBContext _context;

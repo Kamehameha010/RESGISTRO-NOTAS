@@ -17,7 +17,7 @@ namespace SchoolSystem.Infrastructure.Repositories
 
         public async Task<Teacher> FindAsync(int id) => await _context.Teacher.FindAsync(id);
 
-        public IEnumerable GetCoursesbyTeacher(CourseFilter filter)
+        public IEnumerable GetCoursesbyTeacher(GradebookFilter filter)
         {
 
             var teachers = _context.ViewTeacher.AsQueryable();

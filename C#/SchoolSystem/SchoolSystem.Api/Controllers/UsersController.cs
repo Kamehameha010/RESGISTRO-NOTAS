@@ -1,3 +1,4 @@
+using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -13,26 +14,24 @@ namespace SchoolSystem.Api.Controller
 {
     [Route("api/v1/[controller]")]
     [ApiController]
+    [Produces("application/json")]
     public class UsersController : ControllerBase
     {
         private readonly IMapper _mapper;
         private readonly IPasswordService _passwordService;
         private readonly IUnitWork _unitWork;
-        private readonly SchoolDBContext _context;
-        public UsersController(IUnitWork unitWork, IMapper mapper, SchoolDBContext context)
+        public UsersController(IUnitWork unitWork, IMapper mapper)
         {
             _unitWork = unitWork;
             _mapper = mapper;
-            _context = context;
-           
             _passwordService = new PasswordService();
         }
         [HttpGet]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
         public IActionResult Get() => Ok();
-
-
         [HttpPost]
-        public async Task<IActionResult> PostAsync(UserDTO model)
+        [ProducesResponseType((int)HttpStatusCode.OK) ]
+        public async Task<IActionResult> Post(UserDTO model)
         {
             var user = _mapper.Map<User>(model);
             await _unitWork.Users.AddAsync(user);
@@ -40,14 +39,15 @@ namespace SchoolSystem.Api.Controller
             return Ok(new ApiResponse<UserDTO> { Data = _mapper.Map<UserDTO>(user) });
         }
 
-        [HttpPut("{id}")]
-        public IActionResult Put(int id, UserDTO model)
+        [HttpPut]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public IActionResult Put(UserDTO model)
         {
             var user = _mapper.Map<User>(model);
             user.Password ??= _passwordService.Encrypt(user.Password);
             _unitWork.Users.Update(user);
             _unitWork.Save();
-            return Ok();
+            return NoContent();
         }
 
 

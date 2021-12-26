@@ -6,7 +6,7 @@
 
 namespace SchoolSystem.Core.Entities
 {
-    public partial class Student
+    public partial class Student 
     {
         public Student()
         {

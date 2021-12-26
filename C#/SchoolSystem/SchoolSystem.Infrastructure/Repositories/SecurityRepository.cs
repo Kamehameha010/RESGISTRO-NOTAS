@@ -12,7 +12,7 @@ namespace SchoolSystem.Infrastructure.Repositories
 #nullable enable
         private readonly SchoolDBContext _context;
         public SecurityRepository(SchoolDBContext context) => _context = context;
-        public async Task<Security>? CheckUserAsync(userLogin model) =>
+        public async Task<Security>? CheckUserAsync(UserLogin model) =>
         await _context.User.Where(p => p.Username.Equals(model.Username) && p.Password.Equals(model.Password))
             .Select(x => new Security
             {

@@ -9,7 +9,7 @@ namespace SchoolSystem.Api.Controller
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-
+    [Produces("application/json")]
     public class AccessController : ControllerBase
     {
         private readonly ISecurityRepository _repo;
@@ -17,10 +17,15 @@ namespace SchoolSystem.Api.Controller
 
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<Security>))]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> Login(userLogin model)
+        [ProducesResponseType((int)HttpStatusCode.NotFound, Type = typeof(ApiResponse<object>))]
+        public async Task<IActionResult> Login(UserLogin model)
         {
-            return Ok(new ApiResponse<Security> { Data = await _repo.CheckUserAsync(model) });
+            var user = await _repo.CheckUserAsync(model);
+            if (user != null)
+            {
+                return Ok(new ApiResponse<Security> { Data = user });
+            }
+            return NotFound(new ApiResponse<object> { Message = "Check credentials. Try again" });
         }
     }
 }
