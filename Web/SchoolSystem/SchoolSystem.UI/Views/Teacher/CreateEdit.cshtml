@@ -1,0 +1,59 @@
+@{
+
+}
+
+@model CreateEditTeacherViewModel
+
+<div class="row col-md-10">
+    <form action="Post" asp-action=@ViewBag.Action asp-controller="Student" >
+        <input asp-for="Teacher.UserId" type="hidden">
+        <div class="row mb-3">
+            <div class="form-group col-md-5">
+                <label class="form-label" asp-for="Teacher.Name">Nombre:</label>
+                <input class="form-control" asp-for="Teacher.Name">
+            </div>
+            <div class="form-group col-md-5">
+                <label class="form-label" asp-for="Teacher.Lastname">Apellidos:</label>
+                <input class="form-control" asp-for="Teacher.Lastname">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="form-group col-md-5">
+                <label class="form-label" asp-for="Teacher.Nid">Nid:</label>
+                <input class="form-control" asp-for="Teacher.Nid">
+            </div>
+            <div class="form-group col-md-5">
+                <label class="form-label" asp-for="Teacher.Phone">Tel:</label>
+                <input class="form-control" asp-for="Teacher.Phone">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="form-group col-md-10">
+                <label class="form-label" asp-for="Teacher.Address">Dirección:</label>
+                <textarea class="form-control" asp-for="Teacher.Address" cols="100" rows="2"></textarea>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="form-group col-md-5">
+                <label class="form-label" asp-for="Teacher.Username">Usuario:</label>
+                <input class="form-control" asp-for="Teacher.Username">
+            </div>
+            <div class="form-group col-md-5">
+                <label class="form-label" asp-for="Teacher.Password">Contraseña:</label>
+                <input class="form-control" asp-for="Teacher.Password" type="password">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="form-group col-md-10">
+                <label class="form-label" asp-for="TeacherDetail.Subject">Materia:</label>
+                <input class="form-control">
+            </div>
+        </div>
+        <div class="mb-3 col-md-10">
+            <div class="form-group  float-end">
+                <input type="submit" value="Guardar" class="btn btn-outline-success">
+            </div>
+        </div>
+    </form>
+</div>
+</div>
